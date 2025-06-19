@@ -1,0 +1,90 @@
+<ion-content>
+  <div class="container">
+    <div class="header">
+      <h2>Inscription</h2>
+      <p>Veuillez renseigner toutes les informations demandées afin d'avoir un compte </p>
+    </div>
+    <div class="form-box">
+      <form action="" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <div *ngIf="step === 1">
+        <h3>1- Informations personelles</h3>
+
+        <label for="email">Email</label>
+        <input type="email" id="email"
+        name="email"
+        [(ngModel)]="email"
+        required
+        email
+        #emailField="ngModel" placeholder="Un format d'email valide">
+
+        <!-- Message d'erreur email -->
+        <div class="error" *ngIf="emailField.invalid && emailField.touched">
+          <small *ngIf="emailField.errors?.['required']">Email requis</small>
+          <small *ngIf="emailField.errors?.['email']">Format invalide</small>
+        </div>
+
+        <label for="name">Nom complet </label>
+        <input type="text" id="name" 
+        name="nom"
+        [(ngModel)]="nom"
+        required
+        #passwordField="ngModel" 
+        placeholder="Saisir le nom">
+
+
+        <label for="phone">Numéro de téléphone </label>
+        <input type="tel"
+        minlength="9"
+        required
+        name="telephone"
+        [(ngModel)]="telephone"
+        placeholder="Entrez un numero valide">
+
+        <button type="submit" class="login-btn" [disabled]="!loginForm.valid" (click)="nextStep()">Suivant ></button>
+      </div>
+
+      <div *ngIf="step === 2">
+        <h3>2- Informations de sécurité</h3>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" minlength="8" placeholder="Mot de passe" required>
+
+        <label for="confirmPassword">Confirmer votre mot de passe</label>
+        <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirmer votre mot de passe" required>
+
+        <label for="role">Souhaitez vous s'inscrire en tant que: </label>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" id="vendeur" name="role" value="vendeur">
+            <label for="vendeur">Vendeur</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="client" name="role" value="client">
+            <label for="client">Client</label>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="previous-btn" (click)="prevStep()">Précédent</button>
+          <button type="button" class="login-btn" [disabled]="!loginForm.valid" (click)="nextStep()">Suivant</button>
+        </div>
+      </div>
+
+      <div *ngIf="step === 3">
+        <h3>3- Infos supplémentaires</h3>
+        <label for="address">Adresse</label>
+        <input type="text" id="address" [(ngModel)]="address" name="address" placeholder="Adresse" required>
+
+        <label for="region">Région</label>
+        <input type="text" id="region" [(ngModel)]="region" name="region" placeholder="Région" required>
+
+        <div class="button-group">
+          <button type="button" class="previous-btn" (click)="prevStep()">Précédent</button>
+          <button type="button" class="login-btn" [disabled]="!loginForm.valid" (click)="onSubmit()">Valider</button>
+        </div>
+      </div>
+      </form>
+    
+    </div>
+    <footer>Vous avez déjà un compte? <a href="/login">Connectez-vous </a></footer>
+  </div>
+</ion-content>

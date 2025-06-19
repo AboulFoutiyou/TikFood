@@ -1,0 +1,45 @@
+<ion-content>
+  <div class="container">
+    <div class="header">
+      <h2>Connection</h2>
+      <p>Veuillez renseigner votre email et votre mot de passe pour vous connecter </p>
+    </div>
+    <div class="form-box">
+      <form action="" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <label for="email">Email</label>
+        <input type="email" id="email"
+        name="email"
+        [(ngModel)]="email"
+        required
+        email
+        #emailField="ngModel" placeholder="Un format d'email valide">
+
+        <!-- Message d'erreur email -->
+        <div class="error" *ngIf="emailField.invalid && emailField.touched">
+          <small *ngIf="emailField.errors?.['required']">Email requis</small>
+          <small *ngIf="emailField.errors?.['email']">Format invalide</small>
+        </div>
+
+        <label for="mdp">Mot de passe</label>
+        <input type="password" id="mdp" 
+        name="password"
+        [(ngModel)]="password"
+        required
+        minlength="8"
+        #passwordField="ngModel" 
+        placeholder="Minimum 8 caractères">
+
+         <!-- Message d'erreur mot de passe -->
+        <div class="error" *ngIf="passwordField.invalid && passwordField.touched">
+          <small *ngIf="passwordField.errors?.['required']">Mot de passe requis</small>
+          <small *ngIf="passwordField.errors?.['minlength']">
+            Minimum 8 caractères
+          </small>
+        </div>
+
+        <button type="submit" class="login-btn" [disabled]="!loginForm.valid">Se connecter</button>
+      </form>
+    </div>
+    <footer>Vous n'avez pas de compte? <a href="/register">Inscrivez-vous </a></footer>
+  </div>
+</ion-content>

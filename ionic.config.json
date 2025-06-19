@@ -1,0 +1,7 @@
+{
+  "name": "TikFood",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
