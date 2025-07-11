@@ -1,0 +1,126 @@
+<ion-content [fullscreen]="true" class="product-feed-content">
+  <!-- Header with theme toggle -->
+  <!-- <div class="header-section">
+    <h1 class="page-title">Fil d'actualité</h1>
+    <app-theme-toggle></app-theme-toggle>
+  </div> -->
+
+  <!-- Custom Header -->
+  <app-custom-header></app-custom-header>
+
+  <!-- Category Filter -->
+  <div class="filter-section">
+    <ion-segment 
+      [(ngModel)]="selectedCategory" 
+      (ionChange)="onCategoryChange($event)"
+      class="category-segment"
+      value="tous">
+      <ion-segment-button value="tous">
+        <ion-label>Tous</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="sucré">
+        <ion-label>Sucré</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="salé">
+        <ion-label>Salé</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="mixte">
+        <ion-label>Mixte</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="jus">
+        <ion-label>Jus</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <!-- Products Feed -->
+  <div class="feed-container">
+    <ion-card 
+      *ngFor="let product of filteredProducts" 
+      class="product-card"
+      (click)="navigateToProductDetail(product.id)">
+      
+      <!-- Restaurant Header -->
+      <div class="card-header">
+        <div class="restaurant-info">
+          <div class="restaurant-avatar">
+            <ion-icon name="restaurant-outline"></ion-icon>
+          </div>
+          <div class="restaurant-details">
+            <div class="restaurant-name">{{ product.restaurant }}</div>
+            <div class="post-meta">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>{{ getTimeAgo(product.publishedAt) }}</span>
+              <ion-icon name="location-outline"></ion-icon>
+              <span>{{ product.location }}</span>
+            </div>
+          </div>
+        </div>
+        <ion-chip class="category-chip" [color]="selectedCategory === product.category ? 'warning' : 'light'">
+          <ion-label>{{ product.category }}</ion-label>
+        </ion-chip>
+      </div>
+
+      <!-- Product Image -->
+      <div class="product-image-container">
+        <ion-img 
+          [src]="product.images[0]" 
+          [alt]="product.name"
+          class="product-image">
+        </ion-img>
+        <div class="price-overlay">
+          <span class="price-text">{{ formatPrice(product.price) }}</span>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <ion-card-content class="product-content">
+        <div class="product-header">
+          <h2 class="product-name">{{ product.name }}</h2>
+        </div>
+        
+        <p class="product-description">{{ product.description }}</p>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <ion-button 
+            fill="clear" 
+            size="small"
+            (click)="toggleLike(product, $event)"
+            [color]="product.isLiked ? 'danger' : 'medium'">
+            <ion-icon 
+              [name]="product.isLiked ? 'heart' : 'heart-outline'" 
+              slot="start">
+            </ion-icon>
+            {{ product.likes }}
+          </ion-button>
+
+          <ion-button 
+            fill="clear" 
+            size="small"
+            color="medium"
+            (click)="openComments(product.id, $event)">
+            <ion-icon name="chatbubble-outline" slot="start"></ion-icon>
+            {{ product.comments }}
+          </ion-button>
+
+          <ion-button 
+            fill="clear" 
+            size="small"
+            color="medium"
+            (click)="shareProduct(product, $event)">
+            <ion-icon name="share-outline" slot="start"></ion-icon>
+            Partager
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredProducts.length === 0" class="empty-state">
+      <ion-icon name="restaurant-outline" size="large"></ion-icon>
+      <h3>Aucun produit trouvé</h3>
+      <p>Aucun produit ne correspond à cette catégorie pour le moment.</p>
+    </div>
+  </div>
+</ion-content>

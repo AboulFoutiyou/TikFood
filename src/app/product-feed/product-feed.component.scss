@@ -1,0 +1,422 @@
+// Custom Ionic styling for product feed page
+.product-feed-content {
+  --background: #ffffff;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.filter-section {
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .category-segment {
+    --background: #f3f4f6;
+    --indicator-color: #ff7b00;
+    --indicator-color-checked: #ff7b00;
+    --color: #6b7280;
+    --color-checked: #ff7b00;
+    border-radius: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    ion-segment-button {
+      --background-checked: rgba(255, 123, 0, 0.1);
+      --border-radius: 8px;
+      --color: #6b7280;
+      --color-checked: #ff7b00;
+      font-size: 14px;
+      font-weight: 500;
+      min-width: 60px;
+      flex-shrink: 0;
+      
+      ion-label {
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-section {
+    .category-segment {
+      ion-segment-button {
+        min-width: 52px;
+        font-size: 11px;
+        --padding-start: 6px;
+        --padding-end: 6px;
+        
+        ion-label {
+          font-size: 11px;
+          padding: 0 2px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .filter-section {
+    padding: 10px 12px;
+
+    .category-segment {
+      ion-segment-button {
+        min-width: 48px;
+        font-size: 10px;
+        --padding-start: 4px;
+        --padding-end: 4px;
+        
+        ion-label {
+          font-size: 10px;
+          padding: 0 1px;
+          line-height: 1.2;
+        }
+      }
+    }
+  }
+}
+
+
+.feed-container {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-card {
+  --background: #ffffff;
+  --border-radius: 16px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.card-header {
+  padding: 16px 16px 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .restaurant-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+
+    .restaurant-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff9500, #ff7b00);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .restaurant-details {
+      flex: 1;
+
+      .restaurant-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 2px;
+      }
+
+      .post-meta {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        color: #6b7280;
+
+        ion-icon {
+          font-size: 12px;
+          margin-right: 2px;
+        }
+
+        span {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+
+  .category-chip {
+    --background: #f3f4f6;
+    --color: #6b7280;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 500;
+
+    &[color="warning"] {
+      --background: rgba(255, 123, 0, 0.1);
+      --color: #ff7b00;
+    }
+  }
+}
+
+.product-image-container {
+  position: relative;
+  margin: 12px 0 0 0;
+
+  .product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+  .price-overlay {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 8px 16px;
+
+    .price-text {
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+}
+
+.product-content {
+  padding: 16px;
+
+  .product-header {
+    margin-bottom: 8px;
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin: 0;
+      line-height: 1.3;
+    }
+  }
+
+  .product-description {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #6b7280;
+    margin: 0 0 16px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #f3f4f6;
+
+    ion-button {
+      --padding-start: 8px;
+      --padding-end: 8px;
+      --color: #6b7280;
+      font-size: 12px;
+      font-weight: 500;
+
+      &[color="danger"] {
+        --color: #ef4444;
+      }
+
+      ion-icon {
+        font-size: 16px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+
+  ion-icon {
+    color: #d1d5db;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .filter-section {
+    padding: 12px 16px;
+  }
+
+  .feed-container {
+    padding: 12px 16px;
+  }
+
+  .card-header {
+    padding: 12px 12px 0 12px;
+
+    .restaurant-info {
+      gap: 8px;
+
+      .restaurant-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .product-content {
+    padding: 12px;
+  }
+
+  .product-image-container .product-image {
+    height: 200px;
+  }
+}
+
+// Dark theme support
+:host-context(.dark-theme) {
+  .product-feed-content {
+    --background: #1f2937;
+  }
+
+  .header-section {
+    background: #374151;
+    border-bottom-color: #4b5563;
+
+    .page-title {
+      color: #ffffff;
+    }
+  }
+
+  .filter-section {
+    background: #374151;
+    border-bottom-color: #4b5563;
+
+    .category-segment {
+      --background: #4b5563;
+      --color: #d1d5db;
+      --color-checked: #ff7b00;
+
+      ion-segment-button {
+        --background-checked: rgba(255, 123, 0, 0.2);
+        --color: #d1d5db;
+        --color-checked: #ff7b00;
+      }
+    }
+  }
+
+  .product-card {
+    --background: #374151;
+  }
+
+  .card-header {
+    .restaurant-info .restaurant-details {
+      .restaurant-name {
+        color: #ffffff;
+      }
+
+      .post-meta {
+        color: #d1d5db;
+      }
+    }
+
+    .category-chip {
+      --background: #4b5563;
+      --color: #d1d5db;
+
+      &[color="warning"] {
+        --background: rgba(255, 123, 0, 0.2);
+        --color: #ff7b00;
+      }
+    }
+  }
+
+  .product-content {
+    .product-name {
+      color: #ffffff;
+    }
+
+    .product-description {
+      color: #d1d5db;
+    }
+
+    .action-buttons {
+      border-top-color: #4b5563;
+
+      ion-button {
+        --color: #d1d5db;
+
+        &[color="danger"] {
+          --color: #ef4444;
+        }
+      }
+    }
+  }
+
+  .empty-state {
+    ion-icon {
+      color: #6b7280;
+    }
+
+    h3 {
+      color: #ffffff;
+    }
+
+    p {
+      color: #d1d5db;
+    }
+  }
+}

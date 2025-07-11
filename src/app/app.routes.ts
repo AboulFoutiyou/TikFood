@@ -30,4 +30,8 @@ export const routes: Routes = [
     path: 'food/details',
     loadComponent: () => import('./food-details/food-details.component').then((m) => m.FoodDetailsComponent),
   },
+  {
+    path: 'feed',
+    loadComponent: () => import('./product-feed/product-feed.component').then((m) => m.ProductFeedComponent),
+  },
 ];
