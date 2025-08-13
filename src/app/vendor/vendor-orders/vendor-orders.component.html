@@ -1,0 +1,105 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="warning">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Commandes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="orders-content">
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <ion-item>
+      <ion-label>Filtrer par statut</ion-label>
+      <ion-select 
+        [(ngModel)]="selectedStatus" 
+        (ionChange)="onStatusFilterChange($event)"
+        placeholder="Toutes">
+        <ion-select-option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <!-- Orders List -->
+  <div class="orders-container">
+    <div class="orders-header">
+      <h2>{{ filteredOrders.length }} commande(s)</h2>
+    </div>
+
+    <div class="orders-list" *ngIf="filteredOrders.length > 0">
+      <ion-card *ngFor="let order of filteredOrders" class="order-card">
+        <ion-card-content>
+          <!-- Order Header -->
+          <div class="order-header">
+            <div class="order-info">
+              <h3 class="order-id">Commande #{{ order.id }}</h3>
+              <div class="order-time">
+                <ion-icon name="time-outline"></ion-icon>
+                <span>{{ getTimeAgo(order.orderDate) }}</span>
+              </div>
+            </div>
+            <ion-chip [color]="getStatusColor(order.status)" class="status-chip">
+              <ion-label>{{ getStatusLabel(order.status) }}</ion-label>
+            </ion-chip>
+          </div>
+
+          <!-- Product Info -->
+          <div class="product-info">
+            <div class="product-details">
+              <h4 class="product-name">{{ order.productName }}</h4>
+              <div class="quantity-price">
+                <span class="quantity">Quantité: {{ order.quantity }}</span>
+                <span class="total-price">{{ formatPrice(order.totalPrice) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Info -->
+          <div class="customer-info">
+            <div class="customer-item">
+              <ion-icon name="person-outline"></ion-icon>
+              <span>{{ order.customerName }}</span>
+            </div>
+            <div class="customer-item">
+              <ion-icon name="call-outline"></ion-icon>
+              <span>{{ order.customerPhone }}</span>
+            </div>
+            <div class="customer-item">
+              <ion-icon name="location-outline"></ion-icon>
+              <span>{{ order.deliveryAddress }}</span>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="order-notes" *ngIf="order.notes">
+            <strong>Notes:</strong> {{ order.notes }}
+          </div>
+
+          <!-- Status Actions -->
+          <div class="status-actions" *ngIf="canUpdateStatus(order.status)">
+            <ion-button 
+              *ngFor="let statusOption of getNextStatusOptions(order.status)"
+              fill="outline" 
+              size="small"
+              [color]="getStatusColor(statusOption.value)"
+              (click)="updateOrderStatus(order.id, statusOption.value)">
+              {{ statusOption.label }}
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredOrders.length === 0" class="empty-state">
+      <ion-icon name="bag-handle-outline" size="large"></ion-icon>
+      <h3>Aucune commande</h3>
+      <p>{{ selectedStatus === 'all' ? 'Vous n\'avez pas encore reçu de commandes' : 'Aucune commande avec ce statut' }}</p>
+    </div>
+  </div>
+</ion-content>

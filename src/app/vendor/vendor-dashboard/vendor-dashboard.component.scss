@@ -1,0 +1,336 @@
+.vendor-dashboard-content {
+  --background: #ffffff;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.dashboard-header {
+  background: linear-gradient(135deg, #ff9500, #ff7b00);
+  padding: 20px;
+  color: white;
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .vendor-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .vendor-avatar {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .vendor-details {
+      .vendor-name {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+      }
+
+      .vendor-meta {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 14px;
+        opacity: 0.9;
+
+        ion-icon {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+.availability-card {
+  --background: #ffffff;
+  --border-radius: 16px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 16px 20px;
+
+  .availability-item {
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-end: 0;
+
+    .availability-icon {
+      color: #ff7b00;
+      font-size: 20px;
+      margin-right: 12px;
+    }
+
+    ion-label {
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0 0 4px 0;
+      }
+
+      p {
+        font-size: 14px;
+        color: #6b7280;
+        margin: 0;
+      }
+    }
+
+    .availability-toggle {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .status-chip {
+        height: 28px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .availability-note {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f3f4f6;
+    border-radius: 8px;
+
+    p {
+      font-size: 12px;
+      color: #6b7280;
+      margin: 0;
+      line-height: 1.4;
+
+      strong {
+        color: #1f2937;
+      }
+    }
+  }
+}
+
+.stats-section {
+  padding: 0 20px;
+  margin-bottom: 16px;
+
+  .stat-card {
+    --background: #ffffff;
+    --border-radius: 12px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0;
+
+    .stat-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .stat-icon {
+        font-size: 24px;
+        padding: 8px;
+        border-radius: 8px;
+
+        &.today {
+          background: rgba(59, 130, 246, 0.1);
+          color: #3b82f6;
+        }
+
+        &.revenue {
+          background: rgba(34, 197, 94, 0.1);
+          color: #22c55e;
+        }
+      }
+
+      .stat-info {
+        .stat-value {
+          font-size: 18px;
+          font-weight: 700;
+          color: #1f2937;
+          line-height: 1.2;
+        }
+
+        .stat-label {
+          font-size: 12px;
+          color: #6b7280;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+.actions-section {
+  padding: 0 20px;
+  margin-bottom: 24px;
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+  }
+
+  .action-button {
+    --border-radius: 12px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+.activity-section {
+  padding: 0 20px 24px 20px;
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+  }
+
+  .activity-card {
+    --background: #ffffff;
+    --border-radius: 16px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0;
+
+    .activity-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .activity-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f3f4f6;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .activity-label {
+          font-size: 14px;
+          color: #6b7280;
+        }
+
+        .activity-value {
+          font-size: 16px;
+          font-weight: 600;
+          color: #1f2937;
+        }
+      }
+    }
+  }
+}
+
+// Dark theme support
+:host-context(.dark-theme) {
+  .vendor-dashboard-content {
+    --background: #1f2937;
+  }
+
+  .availability-card,
+  .stats-section .stat-card,
+  .activity-section .activity-card {
+    --background: #374151;
+  }
+
+  .availability-card {
+    .availability-item ion-label {
+      h2 {
+        color: #ffffff;
+      }
+
+      p {
+        color: #d1d5db;
+      }
+    }
+
+    .availability-note {
+      background: #4b5563;
+
+      p {
+        color: #d1d5db;
+
+        strong {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  .stats-section .stat-card .stat-content .stat-info {
+    .stat-value {
+      color: #ffffff;
+    }
+
+    .stat-label {
+      color: #d1d5db;
+    }
+  }
+
+  .actions-section .section-title,
+  .activity-section .section-title {
+    color: #ffffff;
+  }
+
+  .activity-section .activity-card .activity-stats .activity-item {
+    border-bottom-color: #4b5563;
+
+    .activity-label {
+      color: #d1d5db;
+    }
+
+    .activity-value {
+      color: #ffffff;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .dashboard-header {
+    padding: 16px;
+
+    .vendor-info {
+      gap: 12px;
+
+      .vendor-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .vendor-details .vendor-name {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .availability-card {
+    margin: 12px 16px;
+  }
+
+  .stats-section,
+  .actions-section,
+  .activity-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

@@ -1,0 +1,354 @@
+.analytics-content {
+  --background: #ffffff;
+}
+
+.stats-overview {
+  padding: 20px;
+
+  .stat-card {
+    --background: #ffffff;
+    --border-radius: 16px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0;
+
+    &.total-orders .stat-icon {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    &.total-revenue .stat-icon {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+    }
+
+    &.today-orders .stat-icon {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+
+    &.today-revenue .stat-icon {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+
+    .stat-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .stat-icon {
+        font-size: 24px;
+        padding: 12px;
+        border-radius: 12px;
+      }
+
+      .stat-info {
+        .stat-value {
+          font-size: 16px;
+          font-weight: 700;
+          color: #1f2937;
+          line-height: 1.2;
+        }
+
+        .stat-label {
+          font-size: 11px;
+          color: #6b7280;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+.charts-section {
+  padding: 0 20px 20px 20px;
+
+  .chart-card {
+    --background: #ffffff;
+    --border-radius: 16px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 0 16px 0;
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0;
+      }
+
+      .chart-total {
+        font-size: 14px;
+        font-weight: 600;
+        color: #6b7280;
+      }
+    }
+
+    .bar-chart {
+      .chart-bars {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        height: 120px;
+        gap: 4px;
+
+        .bar-container {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          height: 100%;
+
+          .bar {
+            width: 100%;
+            max-width: 24px;
+            border-radius: 4px 4px 0 0;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+
+            &.orders-bar {
+              background: linear-gradient(to top, #3b82f6, #60a5fa);
+            }
+
+            &.revenue-bar {
+              background: linear-gradient(to top, #22c55e, #4ade80);
+            }
+          }
+
+          .bar-value {
+            font-size: 10px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+            min-height: 12px;
+          }
+
+          .bar-label {
+            font-size: 10px;
+            color: #6b7280;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
+
+.top-products-section,
+.status-section {
+  padding: 0 20px 20px 20px;
+
+  .top-products-card,
+  .status-card {
+    --background: #ffffff;
+    --border-radius: 16px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0;
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0;
+      }
+
+      ion-icon {
+        font-size: 20px;
+        color: #6b7280;
+      }
+    }
+  }
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .product-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 12px;
+
+    .product-rank {
+      width: 32px;
+      height: 32px;
+      background: #ff7b00;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .product-info {
+      flex: 1;
+
+      .product-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 4px;
+      }
+
+      .product-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .orders-count {
+          font-size: 12px;
+          color: #6b7280;
+        }
+
+        .revenue-amount {
+          font-size: 12px;
+          font-weight: 600;
+          color: #22c55e;
+        }
+      }
+    }
+  }
+}
+
+.status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+
+    .status-chip {
+      height: 28px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-count {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+  }
+}
+
+// Dark theme support
+:host-context(.dark-theme) {
+  .analytics-content {
+    --background: #1f2937;
+  }
+
+  .stats-overview .stat-card,
+  .charts-section .chart-card,
+  .top-products-card,
+  .status-card {
+    --background: #374151;
+  }
+
+  .stats-overview .stat-card .stat-content .stat-info .stat-value,
+  .charts-section .chart-card .chart-header h3,
+  .section-header h3 {
+    color: #ffffff;
+  }
+
+  .stats-overview .stat-card .stat-content .stat-info .stat-label,
+  .charts-section .chart-card .chart-header .chart-total,
+  .section-header ion-icon {
+    color: #d1d5db;
+  }
+
+  .chart-bars .bar-container {
+    .bar-value {
+      color: #ffffff;
+    }
+
+    .bar-label {
+      color: #d1d5db;
+    }
+  }
+
+  .products-list .product-item {
+    background: #4b5563;
+
+    .product-info {
+      .product-name {
+        color: #ffffff;
+      }
+
+      .product-stats {
+        .orders-count {
+          color: #d1d5db;
+        }
+      }
+    }
+  }
+
+  .status-list .status-item .status-count {
+    color: #ffffff;
+  }
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .stats-overview,
+  .charts-section,
+  .top-products-section,
+  .status-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .stats-overview .stat-card .stat-content {
+    gap: 8px;
+
+    .stat-icon {
+      font-size: 20px;
+      padding: 8px;
+    }
+
+    .stat-info .stat-value {
+      font-size: 14px;
+    }
+  }
+
+  .chart-bars .bar-container {
+    .bar {
+      max-width: 20px;
+    }
+
+    .bar-value,
+    .bar-label {
+      font-size: 9px;
+    }
+  }
+
+  .products-list .product-item {
+    gap: 12px;
+
+    .product-rank {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+    }
+  }
+}

@@ -1,0 +1,365 @@
+.products-content {
+  --background: #ffffff;
+}
+
+.products-container {
+  padding: 20px;
+}
+
+.products-header {
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+  }
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  --background: #ffffff;
+  --border-radius: 16px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  overflow: hidden;
+
+  .product-image-container {
+    position: relative;
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .product-actions {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      gap: 4px;
+
+      ion-button {
+        --background: rgba(255, 255, 255, 0.9);
+        --color: #1f2937;
+        --border-radius: 50%;
+        --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 32px;
+        height: 32px;
+
+        &[color="danger"] {
+          --color: #ef4444;
+        }
+      }
+    }
+  }
+
+  ion-card-content {
+    padding: 16px;
+
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+
+      .product-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0;
+        flex: 1;
+        margin-right: 8px;
+      }
+
+      .category-chip {
+        height: 24px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+    }
+
+    .product-description {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.4;
+      margin: 0 0 12px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ff7b00;
+      margin-bottom: 16px;
+    }
+
+    .product-footer {
+      .availability-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .status-chip {
+          height: 24px;
+          font-size: 11px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+
+  ion-icon {
+    color: #d1d5db;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+.modal-content {
+  --background: #ffffff;
+}
+
+.form-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  ion-item {
+    // On retire les styles par défaut pour un contrôle total
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --min-height: auto;
+    
+    /* --- Couleurs & Fond --- */
+    --background: #ffffff; // Un fond blanc pur pour les champs
+    --border-color: #e5e7eb; // Une bordure gris clair, très subtile
+    --border-width: 1px;
+    --highlight-color-focused: var(--ion-color-primary); // La couleur du contour quand on clique
+    --color: #111827; // La couleur du texte saisi (noir-gris)
+
+    /* --- Espacement & Bordures --- */
+    --border-radius: 12px; // Des coins bien arrondis et modernes
+    --inner-padding-top: 8px; // Espace au-dessus du texte de l'input
+    --inner-padding-bottom: 8px; // Espace en dessous
+    padding-left: 14px; // Espace à gauche du label
+    padding-right: 14px; // Espace à droite
+    padding-top: 10px; // Espace au-dessus du label, CRUCIAL pour l'aération
+    padding-bottom: 10px; // Espace en dessous de l'input
+
+    ion-label[position="stacked"] {
+      // Style spécifique pour le label
+      font-weight: 500;
+      font-size: 0.9em;
+      color: #374151; // Un gris foncé pour le label, pas noir
+      margin-bottom: 8px; // Espace entre le label et l'input
+    }
+
+    ion-input,
+    ion-textarea,
+    ion-select {// Style pour les placeholders (le texte d'aide avant saisie)
+      --placeholder-color: #9ca3af; // Un gris plus clair
+      --placeholder-opacity: 1;
+    }
+
+     &.item-toggle {
+      --background: transparent; // Le toggle n'a pas besoin de fond
+      --border-width: 0px;
+    }
+
+    // ion-input,
+    // ion-textarea,
+    // ion-select {
+    //   --background: #f9fafb;
+    //   --border-radius: 8px;
+    //   --padding-start: 12px;
+    //   --padding-end: 12px;
+    // }
+  }
+
+  .file-picker-container {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      border-color: var(--ion-color-primary);
+      background-color: rgba(var(--ion-color-primary-rgb), 0.05);
+    }
+
+    .file-picker-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #6b7280;
+
+      ion-icon {
+        font-size: 40px;
+        color: var(--ion-color-primary);
+      }
+      
+      span {
+        font-weight: 500;
+      }
+
+      small {
+        font-size: 12px;
+      }
+    }
+
+    .preview-container {
+      position: relative;
+      
+      .preview-image, .preview-video {
+        max-width: 100%;
+        max-height: 250px;
+        border-radius: 8px;
+        object-fit: contain;
+      }
+
+      .change-file-btn {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        --background: var(--ion-color-primary);
+        --color: white;
+        --border-radius: 50%;
+        --box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        width: 36px;
+        height: 36px;
+      }
+    }
+  }
+
+  :host-context(.dark) & { // Cible le .form-container quand le thème sombre est actif
+    ion-item {
+      --border-color: #4b5563;
+      --background: #374151; // Fond de l'item en mode sombre
+      
+      ion-label {
+        color: #d1d5db; // Couleur du label en mode sombre
+      }
+
+      // Le sélecteur de l'input est maintenant inutile car on style le parent
+      }}
+
+  .form-actions {
+    margin-top: 24px;
+
+    ion-button {
+      --border-radius: 12px;
+      --padding-top: 16px;
+      --padding-bottom: 16px;
+      font-weight: 600;
+    }
+  }
+}
+
+// Dark theme support
+:host-context(.dark-theme) {
+  .products-content,
+  .modal-content {
+    --background: #1f2937;
+  }
+
+  .products-header h2 {
+    color: #ffffff;
+  }
+
+  .product-card {
+    --background: #374151;
+
+    ion-card-content {
+      .product-name {
+        color: #ffffff;
+      }
+
+      .product-description {
+        color: #d1d5db;
+      }
+    }
+  }
+
+  .empty-state {
+    h3 {
+      color: #ffffff;
+    }
+
+    p {
+      color: #d1d5db;
+    }
+  }
+
+  .form-container {
+    ion-item {
+      --border-color: #4b5563;
+
+      ion-label {
+        color: #d1d5db;
+      }
+
+      ion-input,
+      ion-textarea,
+      ion-select {
+        --background: #374151;
+        --color: #ffffff;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .products-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card .product-image-container .product-image {
+    height: 160px;
+  }
+
+  .form-container {
+    padding: 16px;
+  }
+}

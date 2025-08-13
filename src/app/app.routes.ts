@@ -34,4 +34,20 @@ export const routes: Routes = [
     path: 'feed',
     loadComponent: () => import('./product-feed/product-feed.component').then((m) => m.ProductFeedComponent),
   },
+  {
+    path: 'vendor-dashboard',
+    loadComponent: () => import('./vendor/vendor-dashboard/vendor-dashboard.component').then(m => m.VendorDashboardComponent)
+  },
+  {
+    path: 'vendor-products',
+    loadComponent: () => import('./vendor/vendor-products/vendor-products.component').then(m => m.VendorProductsComponent)
+  },
+  {
+    path: 'vendor-orders',
+    loadComponent: () => import('./vendor/vendor-orders/vendor-orders.component').then(m => m.VendorOrdersComponent)
+  },
+  {
+    path: 'vendor-analytics',
+    loadComponent: () => import('./vendor/vendor-analytics/vendor-analytics.component').then(m => m.VendorAnalyticsComponent)
+  }
 ];

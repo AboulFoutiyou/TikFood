@@ -9,7 +9,7 @@
         <label for="email">Email</label>
         <input type="email" id="email"
         name="email"
-        [(ngModel)]="email"
+        [(ngModel)]="credentials.email"
         required
         email
         #emailField="ngModel" placeholder="Un format d'email valide">
@@ -23,7 +23,7 @@
         <label for="mdp">Mot de passe</label>
         <input type="password" id="mdp" 
         name="password"
-        [(ngModel)]="password"
+        [(ngModel)]="credentials.password"
         required
         minlength="8"
         #passwordField="ngModel" 

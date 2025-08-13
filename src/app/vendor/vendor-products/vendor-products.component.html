@@ -1,0 +1,182 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="chevron-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Mes Produits</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="products-content">
+  <!-- Products List -->
+  <div class="products-container">
+    <div class="products-header">
+      <h2>{{ products.length }} produit(s)</h2>
+    </div>
+
+    <div class="products-grid" *ngIf="products.length > 0">
+      <ion-card *ngFor="let product of products" class="product-card">
+        <div class="product-image-container">
+          <ion-img [src]="product.images[0]" [alt]="product.name" class="product-image"></ion-img>
+          <div class="product-actions">
+            <ion-button fill="clear" size="small" (click)="openEditModal(product)">
+              <ion-icon name="edit-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" color="danger" (click)="deleteProduct(product)">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+
+        <ion-card-content>
+          <div class="product-header">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <ion-chip [color]="getCategoryColor(product.category)" class="category-chip">
+              <ion-label>{{ product.category }}</ion-label>
+            </ion-chip>
+          </div>
+
+          <p class="product-description">{{ product.description }}</p>
+          
+          <div class="product-price">{{ formatPrice(product.price) }}</div>
+
+          <div class="product-footer">
+            <div class="availability-toggle">
+              <ion-chip [color]="getAvailabilityColor(product.isAvailable)" class="status-chip">
+                <ion-label>{{ getAvailabilityText(product.isAvailable) }}</ion-label>
+              </ion-chip>
+              <ion-toggle 
+                [checked]="product.isAvailable" 
+                (ionChange)="toggleProductAvailability(product)"
+                color="success">
+              </ion-toggle>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="products.length === 0" class="empty-state">
+      <ion-icon name="image-outline" size="large"></ion-icon>
+      <h3>Aucun produit</h3>
+      <p>Commencez par ajouter votre premier produit</p>
+    </div>
+  </div>
+
+  <!-- Add Product FAB -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="openAddModal()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Add/Edit Product Modal -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{ editingProduct ? 'Modifier' : 'Ajouter' }} un produit</ion-title>
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="closeModal()">
+              <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="modal-content">
+        <div class="form-container">
+
+          <div class="form-container">
+  
+        <!-- NOUVEAU BLOC POUR L'UPLOAD DE FICHIER -->
+        <div class="file-picker-container">
+          <!-- Le véritable input de fichier, qui sera invisible -->
+          <input type="file" #filePicker (change)="onFileSelected($event)" accept="image/*,video/*" style="display: none;">
+
+          <!-- S'il n'y a pas de fichier sélectionné, on montre la zone d'upload -->
+          <div *ngIf="!previewUrl" class="file-picker-content" (click)="selectFile()">
+            <ion-icon name="cloud-upload-outline"></ion-icon>
+            <span>Choisir une image ou vidéo</span>
+            <small>La première sera votre miniature</small>
+          </div>
+
+          <!-- S'il y a un fichier, on montre l'aperçu -->
+          <div *ngIf="previewUrl" class="preview-container">
+            <img *ngIf="isImage" [src]="previewUrl" alt="Aperçu du produit" class="preview-image">
+            <video *ngIf="!isImage" [src]="previewUrl" controls class="preview-video"></video>
+            
+            <!-- Bouton pour changer/supprimer le fichier -->
+            <ion-button class="change-file-btn" fill="clear" size="small" (click)="selectFile()">
+              <ion-icon name="repeat-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+          <!-- FIN DU BLOC POUR L'UPLOAD DE FICHIER -->      
+          <ion-item fill="outline" label-placement="stacked">
+            <ion-label >Nom du produit *</ion-label>
+            <ion-input 
+              [(ngModel)]="newProduct.name" 
+              placeholder="Ex: Fataya au poisson"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item fill="outline" label-placement="stacked">
+            <ion-label>Description *</ion-label>
+            <ion-textarea 
+              [(ngModel)]="newProduct.description" 
+              placeholder="Décrivez votre produit..."
+              rows="3"
+              required>
+            </ion-textarea>
+          </ion-item>
+
+          <ion-item fill="outline" label-placement="stacked">
+            <ion-label>Prix (F CFA) *</ion-label>
+            <ion-input 
+              type="number" 
+              [(ngModel)]="newProduct.price" 
+              placeholder="0"
+              min="0"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item fill="outline" label-placement="stacked">
+            <ion-label >Catégorie</ion-label>
+            <ion-select [(ngModel)]="newProduct.category" placeholder="Choisir une catégorie">
+              <ion-select-option *ngFor="let category of categories" [value]="category.value">
+                {{ category.label }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item lines="none" class="item-toggle">
+            <ion-label>Disponible</ion-label>
+            <ion-toggle 
+              [(ngModel)]="newProduct.isAvailable" 
+              color="success"
+              slot="end">
+            </ion-toggle>
+          </ion-item>
+
+          <div class="form-actions">
+            <ion-button 
+              expand="block" 
+              color="primary" 
+              (click)="saveProduct()"
+              [disabled]="!isFormValid()">
+              <ion-icon name="save-outline" slot="start"></ion-icon>
+              {{ editingProduct ? 'Modifier' : 'Ajouter' }}
+            </ion-button>
+          </div>
+        </div>
+      </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

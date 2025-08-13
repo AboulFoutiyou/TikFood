@@ -1,0 +1,149 @@
+<ion-content [fullscreen]="true" class="vendor-dashboard-content">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="vendor-info">
+        <div class="vendor-avatar">
+          <ion-icon name="restaurant-outline"></ion-icon>
+        </div>
+        <div class="vendor-details">
+          <h1 class="vendor-name">{{ vendorProfile?.name }}</h1>
+          <div class="vendor-meta">
+            <ion-icon name="location-outline"></ion-icon>
+            <span>{{ vendorProfile?.location }}</span>
+          </div>
+        </div>
+      </div>
+      <app-theme-toggle></app-theme-toggle>
+    </div>
+  </div>
+
+  <!-- Availability Toggle -->
+  <ion-card class="availability-card">
+    <ion-card-content>
+      <ion-item lines="none" class="availability-item">
+        <ion-icon name="time-outline" slot="start" class="availability-icon"></ion-icon>
+        <ion-label>
+          <h2>Statut de disponibilité</h2>
+          <p>{{ vendorProfile?.openingHours?.start }} - {{ vendorProfile?.openingHours?.end }}</p>
+        </ion-label>
+        <div class="availability-toggle" slot="end">
+          <ion-chip [color]="getStatusColor(vendorProfile?.isAvailable || false)" class="status-chip">
+            <ion-label>{{ getStatusText(vendorProfile?.isAvailable || false) }}</ion-label>
+          </ion-chip>
+          <ion-toggle 
+            [checked]="vendorProfile?.isAvailable" 
+            (ionChange)="toggleAvailability()"
+            color="success">
+          </ion-toggle>
+        </div>
+      </ion-item>
+      <div class="availability-note">
+        <p><strong>Note:</strong> Quand vous êtes indisponible, vos produits n'apparaissent pas dans le fil d'actualité des clients.</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Quick Stats -->
+  <div class="stats-section" *ngIf="analytics">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="stat-card">
+            <ion-card-content>
+              <div class="stat-content">
+                <ion-icon name="today-outline" class="stat-icon today"></ion-icon>
+                <div class="stat-info">
+                  <div class="stat-value">{{ analytics.todayOrders }}</div>
+                  <div class="stat-label">Commandes aujourd'hui</div>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card class="stat-card">
+            <ion-card-content>
+              <div class="stat-content">
+                <ion-icon name="trending-up-outline" class="stat-icon revenue"></ion-icon>
+                <div class="stat-info">
+                  <div class="stat-value">{{ formatPrice(analytics.todayRevenue) }}</div>
+                  <div class="stat-label">Revenus aujourd'hui</div>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="actions-section">
+    <h2 class="section-title">Actions rapides</h2>
+    
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button 
+            expand="block" 
+            fill="outline" 
+            color="primary"
+            class="action-button"
+            (click)="navigateToProducts()">
+            <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+            Mes Produits
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button 
+            expand="block" 
+            fill="outline" 
+            color="warning"
+            class="action-button"
+            (click)="navigateToOrders()">
+            <ion-icon name="bag-handle-outline" slot="start"></ion-icon>
+            Commandes
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-button 
+            expand="block" 
+            fill="outline" 
+            color="success"
+            class="action-button"
+            (click)="navigateToAnalytics()">
+            <ion-icon name="analytics-outline" slot="start"></ion-icon>
+            Statistiques & Historique
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="activity-section" *ngIf="analytics">
+    <h2 class="section-title">Aperçu des performances</h2>
+    
+    <ion-card class="activity-card">
+      <ion-card-content>
+        <div class="activity-stats">
+          <div class="activity-item">
+            <span class="activity-label">Total commandes</span>
+            <span class="activity-value">{{ analytics.totalOrders }}</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-label">Revenus totaux</span>
+            <span class="activity-value">{{ formatPrice(analytics.totalRevenue) }}</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-label">Commandes cette semaine</span>
+            <span class="activity-value">{{ weeklyOrdersTotal }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
