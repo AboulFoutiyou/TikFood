@@ -2,11 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JWTAuthenticationStrategy = void 0;
 const tslib_1 = require("tslib");
+const core_1 = require("@loopback/core");
+const repository_1 = require("@loopback/repository"); // <-- NOUVEL IMPORT
 const rest_1 = require("@loopback/rest");
-const security_1 = require("@loopback/security");
 const jwt = tslib_1.__importStar(require("jsonwebtoken"));
-class JWTAuthenticationStrategy {
-    constructor() {
+const repositories_1 = require("../repositories");
+const vendor_user_service_1 = require("../services/vendor-user.service"); // Importez votre service
+const keys_1 = require("../services/keys");
+const authentication_jwt_1 = require("@loopback/authentication-jwt");
+let JWTAuthenticationStrategy = class JWTAuthenticationStrategy {
+    constructor(userService, vendorRepository, jwtSecret) {
+        this.userService = userService;
+        this.vendorRepository = vendorRepository;
+        this.jwtSecret = jwtSecret;
         this.name = 'jwt';
     }
     async authenticate(request) {
@@ -28,24 +36,33 @@ class JWTAuthenticationStrategy {
         return parts[1];
     }
     async verifyToken(token) {
-        if (!token) {
-            throw new rest_1.HttpErrors.Unauthorized(`Error verifying token : 'token' is null`);
-        }
+        // const secret = process.env.JWT_SECRET as string;
+        // if (!secret) {
+        //   throw new HttpErrors.InternalServerError('JWT_SECRET non défini.');
+        // }
         try {
-            const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-            const userProfile = {
-                [security_1.securityId]: decodedToken.id,
-                name: decodedToken.name,
-                id: decodedToken.id,
-                email: decodedToken.email,
-                roles: decodedToken.roles,
-            };
-            return userProfile;
+            const decodedToken = jwt.verify(token, this.jwtSecret);
+            if (!decodedToken.id) {
+                throw new rest_1.HttpErrors.Unauthorized('Invalid token: ID is missing');
+            }
+            const vendor = await this.vendorRepository.findById(decodedToken.id);
+            if (!vendor) {
+                throw new rest_1.HttpErrors.Unauthorized('User not found for this token');
+            }
+            return this.userService.convertToUserProfile(vendor);
         }
         catch (error) {
-            throw new rest_1.HttpErrors.Unauthorized(`Error verifying token : ${error.message}`);
+            throw new rest_1.HttpErrors.Unauthorized(`Error during token verification: ${error.message}`);
         }
     }
-}
+};
 exports.JWTAuthenticationStrategy = JWTAuthenticationStrategy;
+exports.JWTAuthenticationStrategy = JWTAuthenticationStrategy = tslib_1.__decorate([
+    (0, core_1.injectable)(),
+    tslib_1.__param(0, (0, core_1.inject)(keys_1.VendorUserServiceBindings.USER_SERVICE)),
+    tslib_1.__param(1, (0, repository_1.repository)(repositories_1.VendorRepository)),
+    tslib_1.__param(2, (0, core_1.inject)(authentication_jwt_1.TokenServiceBindings.TOKEN_SECRET)),
+    tslib_1.__metadata("design:paramtypes", [vendor_user_service_1.VendorUserService,
+        repositories_1.VendorRepository, String])
+], JWTAuthenticationStrategy);
 //# sourceMappingURL=jwt-strategy.js.map

@@ -12,11 +12,12 @@ export enum ProductCategory {
 @model()
 export class Product extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
     generated: true,
+    // required: true,
   })
-  id?: number;
+  id?: string;
 
   @property({
     type: 'string',
@@ -69,7 +70,7 @@ export class Product extends Entity {
   updatedAt?: Date;
 
   @belongsTo(() => Vendor)
-  vendorId: number;
+  vendorId: string;
 
   @hasMany(() => Order)
   orders: Order[];

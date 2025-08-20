@@ -28,7 +28,7 @@ export class ApiService {
     return localStorage.getItem('vendor_token');
   }
 
-  private setToken(token: string): void {
+  public setToken(token: string): void {
     localStorage.setItem('vendor_token', token);
     this.tokenSubject.next(token);
   }
@@ -46,6 +46,33 @@ export class ApiService {
         'Content-Type': 'application/json'
       })
     };
+  }
+
+  private getPHeaders(): { headers: HttpHeaders } {
+    const token = this.getStoredToken();
+    return {
+      headers: new HttpHeaders({
+        'Authorization': token ? `Bearer ${token}` : ''
+      })
+    };
+  }
+
+  private getJsonHeaders(): HttpHeaders {
+    let headers = this.getAuthHeaders();
+    if (headers.has('Authorization')) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+    return headers;
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token'); // ou votre méthode de stockage de token
+    if (!token) {
+      return new HttpHeaders();
+    }
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
   }
 
   // ==================== AUTHENTIFICATION ====================
@@ -66,12 +93,16 @@ export class ApiService {
     return this.http.get<VendorProfile>(`${this.apiUrl}/vendors/me`, this.getHeaders());
   }
 
-  updateVendorProfile(id: number, updates: Partial<VendorProfile>): Observable<void> {
+  updateVendorProfile(id: string, updates: Partial<VendorProfile>): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/vendors/${id}`, updates, this.getHeaders());
   }
 
-  toggleVendorAvailability(id: number): Observable<void> {
+  toggleVendorAvailability(id: string): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/vendors/${id}/availability`, {}, this.getHeaders());
+  }
+
+  getVendorProfile(id: string): Observable<VendorProfile> {
+    return this.http.get<VendorProfile>(`${this.apiUrl}/vendors/${id}`, this.getHeaders());
   }
 
   // ==================== PRODUITS ====================
@@ -95,9 +126,9 @@ export class ApiService {
     // Si vous forcez 'Content-Type: application/json', l'upload échouera.
     
     // On doit juste passer les en-têtes d'authentification (token JWT) s'il y en a.
-    const authHeaders = this.getHeaders(); // Supposons que cette méthode retourne les headers d'authentification
+    //const authHeaders = this.getHeaders(false); // Supposons que cette méthode retourne les headers d'authentification
     
-    return this.http.post<VendorProduct>(`${this.apiUrl}/products`, formData, { headers: authHeaders.headers });
+    return this.http.post<VendorProduct>(`${this.apiUrl}/products`, formData, this.getPHeaders());
   }
 
   updateProduct(id: string, updates: Partial<VendorProduct>): Observable<void> {

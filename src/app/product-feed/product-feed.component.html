@@ -47,12 +47,12 @@
             <ion-icon name="restaurant-outline"></ion-icon>
           </div>
           <div class="restaurant-details">
-            <div class="restaurant-name">{{ product.restaurant }}</div>
+            <div class="restaurant-name">{{ vendorProfiles[product.vendorId].name || 'Inconnu' }}</div>
             <div class="post-meta">
               <ion-icon name="time-outline"></ion-icon>
-              <span>{{ getTimeAgo(product.publishedAt) }}</span>
+              <span>{{ getTimeAgo(product.createdAt) }}</span>
               <ion-icon name="location-outline"></ion-icon>
-              <span>{{ product.location }}</span>
+              <span>{{ vendorProfiles[product.vendorId].location }}</span>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <ion-button 
+          <!-- <ion-button 
             fill="clear" 
             size="small"
             (click)="toggleLike(product, $event)"
@@ -93,25 +93,25 @@
               slot="start">
             </ion-icon>
             {{ product.likes }}
-          </ion-button>
+          </ion-button> -->
 
-          <ion-button 
+          <!-- <ion-button 
             fill="clear" 
             size="small"
             color="medium"
             (click)="openComments(product.id, $event)">
             <ion-icon name="chatbubble-outline" slot="start"></ion-icon>
             {{ product.comments }}
-          </ion-button>
+          </ion-button> -->
 
-          <ion-button 
+          <!-- <ion-button 
             fill="clear" 
             size="small"
             color="medium"
             (click)="shareProduct(product, $event)">
             <ion-icon name="share-outline" slot="start"></ion-icon>
             Partager
-          </ion-button>
+          </ion-button> -->
         </div>
       </ion-card-content>
     </ion-card>

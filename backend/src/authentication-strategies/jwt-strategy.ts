@@ -1,13 +1,28 @@
 import {AuthenticationStrategy} from '@loopback/authentication';
-import {inject} from '@loopback/core';
+import {inject, injectable} from '@loopback/core';
+import {repository} from '@loopback/repository'; // <-- NOUVEL IMPORT
 import {HttpErrors, Request} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import * as jwt from 'jsonwebtoken';
+import {VendorRepository} from '../repositories';
+import {VendorUserService} from '../services/vendor-user.service'; // Importez votre service
+import {VendorUserServiceBindings, TokenServiceConstants} from '../services/keys';
+import {TokenServiceBindings} from '@loopback/authentication-jwt';
 
+@injectable()
 export class JWTAuthenticationStrategy implements AuthenticationStrategy {
   name = 'jwt';
 
-  constructor() {}
+  constructor(
+     @inject(VendorUserServiceBindings.USER_SERVICE)
+    public userService: VendorUserService,
+
+    @repository(VendorRepository)
+    public vendorRepository: VendorRepository,
+
+    @inject(TokenServiceBindings.TOKEN_SECRET)
+    private jwtSecret: string,
+  ) {}
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
     const token: string = this.extractCredentials(request);
@@ -38,24 +53,28 @@ export class JWTAuthenticationStrategy implements AuthenticationStrategy {
   }
 
   async verifyToken(token: string): Promise<UserProfile> {
-    if (!token) {
-      throw new HttpErrors.Unauthorized(`Error verifying token : 'token' is null`);
-    }
-
+    // const secret = process.env.JWT_SECRET as string;
+    // if (!secret) {
+    //   throw new HttpErrors.InternalServerError('JWT_SECRET non défini.');
+    // }
     try {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      const decodedToken = jwt.verify(token, this.jwtSecret) as any;
 
-      const userProfile: UserProfile = {
-        [securityId]: (decodedToken as any).id,
-        name: (decodedToken as any).name,
-        id: (decodedToken as any).id,
-        email: (decodedToken as any).email,
-        roles: (decodedToken as any).roles,
-      };
+      if (!decodedToken.id) {
+        throw new HttpErrors.Unauthorized('Invalid token: ID is missing');
+      }
 
-      return userProfile;
-    } catch (error) {
-      throw new HttpErrors.Unauthorized(`Error verifying token : ${error.message}`);
+      const vendor = await this.vendorRepository.findById(decodedToken.id);
+      if (!vendor) {
+        throw new HttpErrors.Unauthorized('User not found for this token');
+      }
+
+      return this.userService.convertToUserProfile(vendor);
+    } catch (error: any) {
+      throw new HttpErrors.Unauthorized(
+        `Error during token verification: ${error.message}`,
+      );
     }
   }
+  
 }

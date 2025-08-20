@@ -20,11 +20,12 @@ let Product = class Product extends repository_1.Entity {
 exports.Product = Product;
 tslib_1.__decorate([
     (0, repository_1.property)({
-        type: 'number',
+        type: 'string',
         id: true,
         generated: true,
+        // required: true,
     }),
-    tslib_1.__metadata("design:type", Number)
+    tslib_1.__metadata("design:type", String)
 ], Product.prototype, "id", void 0);
 tslib_1.__decorate([
     (0, repository_1.property)({
@@ -86,7 +87,7 @@ tslib_1.__decorate([
 ], Product.prototype, "updatedAt", void 0);
 tslib_1.__decorate([
     (0, repository_1.belongsTo)(() => vendor_model_1.Vendor),
-    tslib_1.__metadata("design:type", Number)
+    tslib_1.__metadata("design:type", String)
 ], Product.prototype, "vendorId", void 0);
 tslib_1.__decorate([
     (0, repository_1.hasMany)(() => order_model_1.Order),

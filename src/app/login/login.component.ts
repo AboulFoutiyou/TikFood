@@ -32,6 +32,7 @@ export class LoginComponent  implements OnInit {
         this.apiService.handleLoginSuccess(response);
         // Redirige l'utilisateur ou recharge la page
         this.router.navigate(['/vendor-dashboard']);
+        this.apiService.setToken(response.token);
 
       },
       error: (err) => {

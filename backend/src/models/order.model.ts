@@ -90,10 +90,10 @@ export class Order extends Entity {
   updatedAt?: Date;
 
   @belongsTo(() => Vendor)
-  vendorId: number;
+  vendorId: string;
 
   @belongsTo(() => Product)
-  productId: number;
+  productId: string;
 
   constructor(data?: Partial<Order>) {
     super(data);

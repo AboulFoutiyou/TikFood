@@ -8,6 +8,7 @@ export interface VendorProduct {
   isAvailable: boolean;
   createdAt: Date;
   updatedAt: Date;
+  vendorId: string; // ID of the vendor who owns this product
 }
 
 export interface Order {

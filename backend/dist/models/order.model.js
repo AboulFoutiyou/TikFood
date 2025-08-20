@@ -110,11 +110,11 @@ tslib_1.__decorate([
 ], Order.prototype, "updatedAt", void 0);
 tslib_1.__decorate([
     (0, repository_1.belongsTo)(() => vendor_model_1.Vendor),
-    tslib_1.__metadata("design:type", Number)
+    tslib_1.__metadata("design:type", String)
 ], Order.prototype, "vendorId", void 0);
 tslib_1.__decorate([
     (0, repository_1.belongsTo)(() => product_model_1.Product),
-    tslib_1.__metadata("design:type", Number)
+    tslib_1.__metadata("design:type", String)
 ], Order.prototype, "productId", void 0);
 exports.Order = Order = tslib_1.__decorate([
     (0, repository_1.model)(),

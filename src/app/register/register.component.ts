@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class RegisterComponent  implements OnInit {
   region: string = '';
   step: number = 1;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private router: Router) { }
 
   ngOnInit() {}
 
@@ -54,6 +55,8 @@ export class RegisterComponent  implements OnInit {
       next: (res) => {
         console.log('Inscription réussie', res);
         // tu peux stocker le token ou rediriger
+        this.api.setToken(res.token);
+        this.router.navigate(['/vendor-dashboard']);
         
       },
       error: (err) => {

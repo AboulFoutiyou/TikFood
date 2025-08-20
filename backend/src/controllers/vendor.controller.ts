@@ -191,7 +191,7 @@ export class VendorController {
     },
   })
   async findById(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @param.filter(Vendor, {exclude: 'where'})
     filter?: FilterExcludingWhere<Vendor>,
   ): Promise<Vendor> {
@@ -230,12 +230,12 @@ export class VendorController {
 
   @patch('/vendors/{id}/availability')
   @authenticate('jwt')
-  @authorize({allowedRoles: ['vendor']})
+  //@authorize({allowedRoles: ['vendor']})
   @response(204, {
     description: 'Toggle vendor availability',
   })
   async toggleAvailability(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @inject(SecurityBindings.USER) currentUser: UserProfile,
   ): Promise<void> {
     if (currentUser.id !== id) {

@@ -8,7 +8,7 @@ export declare enum ProductCategory {
     JUS = "jus"
 }
 export declare class Product extends Entity {
-    id?: number;
+    id?: string;
     name: string;
     description?: string;
     price: number;
@@ -17,7 +17,7 @@ export declare class Product extends Entity {
     isAvailable?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
-    vendorId: number;
+    vendorId: string;
     orders: Order[];
     constructor(data?: Partial<Product>);
 }

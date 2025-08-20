@@ -24,6 +24,12 @@ import {JWTAuthenticationStrategy} from './authentication-strategies/jwt-strateg
 import {VendorUserService} from './services/vendor-user.service';
 import {corsMiddleware} from './middleware/cors.middleware';
 import {MiddlewareMixin} from '@loopback/rest';
+import {FILE_UPLOAD_SERVICE, multerOptions} from './config/file-upload';
+import {FileUploadController} from './controllers/file-upload.controller';
+import {RestBindings} from '@loopback/rest';
+import {AuthenticationBindings} from '@loopback/authentication';
+import {TokenServiceBindings, TokenServiceConstants, JWTService} from '@loopback/authentication-jwt';
+
 
 export {ApplicationConfig};
 
@@ -50,6 +56,7 @@ export class FoodMarketplaceApplication extends BootMixin(
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
+    this.static('/uploads', path.join(__dirname, '../.sandbox'));
 
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({
@@ -65,6 +72,18 @@ export class FoodMarketplaceApplication extends BootMixin(
     // Register JWT authentication strategy
     registerAuthenticationStrategy(this, JWTAuthenticationStrategy);
 
+     this.bind(TokenServiceBindings.TOKEN_SECRET).to(
+      process.env.JWT_SECRET ?? TokenServiceConstants.TOKEN_SECRET_VALUE,
+    );
+
+    this.bind(TokenServiceBindings.TOKEN_EXPIRES_IN).to(
+      process.env.JWT_EXPIRES_IN ?? TokenServiceConstants.TOKEN_EXPIRES_IN_VALUE,
+    );
+
+    this.bind(TokenServiceBindings.TOKEN_SERVICE).toClass(JWTService);
+
+    
+
     // Bind user service
     this.bind(UserServiceBindings.USER_SERVICE).toClass(VendorUserService);
 
@@ -72,6 +91,10 @@ export class FoodMarketplaceApplication extends BootMixin(
 
     // Add security scheme to OpenAPI spec
     this.addSecuritySpec();
+
+     this.configure(RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+        limit: '10MB', // Limite de taille de fichier
+    });
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

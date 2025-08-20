@@ -68,7 +68,7 @@ export class VendorService {
   updateVendorProfile(profile: Partial<VendorProfile>): void {
     const current = this.vendorProfile.value;
     if (current) {
-      this.apiService.updateVendorProfile(Number(current.id), profile).pipe(
+      this.apiService.updateVendorProfile(current.id, profile).pipe(
         tap(() => {
           this.vendorProfile.next({ ...current, ...profile });
         }),
@@ -83,7 +83,7 @@ export class VendorService {
   toggleAvailability(): void {
     const current = this.vendorProfile.value;
     if (current) {
-      this.apiService.toggleVendorAvailability(Number(current.id)).pipe(
+      this.apiService.toggleVendorAvailability(current.id).pipe(
         tap(() => {
           this.vendorProfile.next({ ...current, isAvailable: !current.isAvailable });
         }),

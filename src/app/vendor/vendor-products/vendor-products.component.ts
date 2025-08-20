@@ -69,9 +69,9 @@ import {
     IonTextarea,
     IonSelect,
     IonSelectOption,
-    IonGrid,
-    IonRow,
-    IonCol
+    //IonGrid,
+    //IonRow,
+    //IonCol
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './vendor-products.component.html',
@@ -114,13 +114,15 @@ export class VendorProductsComponent implements OnInit {
       'trash-outline': trashOutline,
       'image-outline': imageOutline,
       'save-outline': saveOutline,
-      'close-outline': closeOutline
+      'close-outline': closeOutline,
+      'edit-outline': closeOutline
     });
   }
 
   ngOnInit(): void {
     this.vendorService.products$.subscribe(products => {
       this.products = products;
+      console.log('Produits récupérés :', this.products);
     });
   }
 
@@ -147,6 +149,9 @@ export class VendorProductsComponent implements OnInit {
       // On génère une URL locale pour l'aperçu
       // Cette URL ne fonctionne que dans le navigateur de l'utilisateur
       this.previewUrl = URL.createObjectURL(file);
+
+      // Met à jour directement newProduct.images avec l'image uploadée
+      this.newProduct.images = [this.previewUrl];
     }
   }
 
@@ -162,6 +167,7 @@ export class VendorProductsComponent implements OnInit {
 
   openEditModal(product: VendorProduct): void {
     this.editingProduct = product;
+    this.previewUrl = product.images && product.images.length > 0 ? product.images[0] : null;
     this.newProduct = {
       name: product.name,
       description: product.description,
@@ -181,34 +187,35 @@ export class VendorProductsComponent implements OnInit {
   }
 
   saveProduct(): void {
-    if (this.editingProduct) {
-      this.vendorService.updateProduct(this.editingProduct.id, this.newProduct);
-    } else {
-      const formData = new FormData();
+    // if (this.editingProduct) {
+    //   this.vendorService.updateProduct(this.editingProduct.id, this.newProduct);
+    // } else {
+    //   this.vendorService.addProduct(this.newProduct);
+    // }
+    const formData = new FormData();
+  formData.append('name', this.newProduct.name);
+  formData.append('description', this.newProduct.description);
+  formData.append('price', this.newProduct.price.toString());
+  formData.append('category', this.newProduct.category);
+  formData.append('isAvailable', this.newProduct.isAvailable.toString());
 
-      formData.append('name', this.newProduct.name);
-      formData.append('description', this.newProduct.description);
-      formData.append('price', this.newProduct.price.toString()); // Toujours envoyer en string
-      formData.append('category', this.newProduct.category);
-      formData.append('isAvailable', this.newProduct.isAvailable.toString());
-      if (this.selectedFile) {
-        formData.append('images', this.selectedFile, this.selectedFile.name);
-      } else {
-        // Si pas de fichier sélectionné, on utilise l'image par défaut
-        console.warn('Aucun fichier sélectionné, utilisation de l\'image par défaut.');
-      }
-      console.log('FormData avant envoi:', formData);
-      this.vendorService.addProductWithFile(formData).subscribe({
-        next: (response) => {
-          console.log('Produit ajouté avec succès !', response);
-          this.closeModal();
-        },
-        error: (err) => {
-          console.error('Erreur lors de l\'ajout du produit :', err);
-        }
-      });
-      }
-    this.closeModal();
+  if (this.selectedFile) {
+    formData.append('images', this.selectedFile, this.selectedFile.name);
+  } else {
+    console.error("L'image est obligatoire pour créer un produit.");
+    return;
+  }
+  
+  // 2. Appeler une NOUVELLE méthode dans VendorService
+  this.vendorService.addProductWithFile(formData).subscribe({
+    next: () => {
+      // Le VendorService mettra à jour la liste des produits lui-même
+      this.closeModal();
+    },
+    error: (err) => {
+      console.error("Erreur lors de l'ajout du produit depuis le component :", err);
+    }
+  });
   }
 
   deleteProduct(product: VendorProduct): void {

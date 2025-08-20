@@ -17,6 +17,8 @@ const jwt_strategy_1 = require("./authentication-strategies/jwt-strategy");
 const vendor_user_service_1 = require("./services/vendor-user.service");
 const cors_middleware_1 = require("./middleware/cors.middleware");
 const rest_2 = require("@loopback/rest");
+const rest_3 = require("@loopback/rest");
+const authentication_jwt_2 = require("@loopback/authentication-jwt");
 class FoodMarketplaceApplication extends (0, boot_1.BootMixin)((0, service_proxy_1.ServiceMixin)((0, repository_1.RepositoryMixin)((0, rest_2.MiddlewareMixin)(rest_1.RestApplication)))) {
     constructor(options = {}) {
         super(options);
@@ -33,6 +35,7 @@ class FoodMarketplaceApplication extends (0, boot_1.BootMixin)((0, service_proxy
         this.sequence(sequence_1.MySequence);
         // Set up default home page
         this.static('/', path_1.default.join(__dirname, '../public'));
+        this.static('/uploads', path_1.default.join(__dirname, '../.sandbox'));
         // Customize @loopback/rest-explorer configuration here
         this.configure(rest_explorer_1.RestExplorerBindings.COMPONENT).to({
             path: '/explorer',
@@ -44,11 +47,17 @@ class FoodMarketplaceApplication extends (0, boot_1.BootMixin)((0, service_proxy
         this.component(authorization_2.AuthorizationComponent);
         // Register JWT authentication strategy
         (0, authentication_1.registerAuthenticationStrategy)(this, jwt_strategy_1.JWTAuthenticationStrategy);
+        this.bind(authentication_jwt_2.TokenServiceBindings.TOKEN_SECRET).to(process.env.JWT_SECRET ?? authentication_jwt_2.TokenServiceConstants.TOKEN_SECRET_VALUE);
+        this.bind(authentication_jwt_2.TokenServiceBindings.TOKEN_EXPIRES_IN).to(process.env.JWT_EXPIRES_IN ?? authentication_jwt_2.TokenServiceConstants.TOKEN_EXPIRES_IN_VALUE);
+        this.bind(authentication_jwt_2.TokenServiceBindings.TOKEN_SERVICE).toClass(authentication_jwt_2.JWTService);
         // Bind user service
         this.bind(authentication_jwt_1.UserServiceBindings.USER_SERVICE).toClass(vendor_user_service_1.VendorUserService);
         this.bind('authorization.authorize').to(authorization_1.authorize);
         // Add security scheme to OpenAPI spec
         this.addSecuritySpec();
+        this.configure(rest_3.RestBindings.REQUEST_BODY_PARSER_OPTIONS).to({
+            limit: '10MB', // Limite de taille de fichier
+        });
         this.projectRoot = __dirname;
         // Customize @loopback/boot Booter Conventions here
         this.bootOptions = {
