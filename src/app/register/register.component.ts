@@ -41,29 +41,43 @@ export class RegisterComponent  implements OnInit {
       return;
     }
     
-   const vendorData = {
+   const userData = {
     name: this.nom,       // 'name' est probablement correct
     email: this.email,
     password: this.password,
     phone: this.telephone, // Utilisez 'telephone' si c'est le nom dans le modèle
     location: this.address,     // Utilisez 'address' si c'est le nom dans le modèle
-    // role: this.role,           // N'oubliez pas d'envoyer les autres champs si le backend en a besoin
+    //role: this.role,           // N'oubliez pas d'envoyer les autres champs si le backend en a besoin
     // region: this.region,
   };
 
-    this.api.register(vendorData).subscribe({
-      next: (res) => {
-        console.log('Inscription réussie', res);
-        // tu peux stocker le token ou rediriger
-        this.api.setToken(res.token);
-        this.router.navigate(['/vendor-dashboard']);
-        
-      },
-      error: (err) => {
-        console.error('Erreur d’inscription', err);
-      }
-    });
-  }
+    if (this.role === 'vendeur') {
+      this.api.register(userData).subscribe({
+        next: (res) => {
+          console.log('Inscription vendeur réussie', res);
+          this.api.setToken(res.token);
+          this.router.navigate(['/vendor-dashboard']);
+        },
+        error: (err) => {
+          console.error('Erreur d’inscription vendeur', err);
+        }
+      });
+    } else if (this.role === 'client') {
+      this.api.registerClient(userData).subscribe({
+        next: (res) => {
+          console.log('Inscription client réussie', res);
+          // Si tu veux stocker le token client, ajoute une méthode dédiée
+          // this.api.setClientToken(res.token);
+          this.router.navigate(['/feed']);
+        },
+        error: (err) => {
+          console.error('Erreur d’inscription client', err);
+        }
+      });
+    } else {
+      console.error('Rôle non reconnu');
+    }
+  } 
   
 
 }

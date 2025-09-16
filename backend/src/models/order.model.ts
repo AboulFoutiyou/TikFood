@@ -1,6 +1,7 @@
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Vendor} from './vendor.model';
 import {Product} from './product.model';
+import {Client} from './client.model';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -94,6 +95,9 @@ export class Order extends Entity {
 
   @belongsTo(() => Product)
   productId: string;
+
+  @belongsTo(() => Client)
+  clientId: string;
 
   constructor(data?: Partial<Order>) {
     super(data);

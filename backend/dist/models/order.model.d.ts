@@ -24,6 +24,7 @@ export declare class Order extends Entity {
     updatedAt?: Date;
     vendorId: string;
     productId: string;
+    clientId: string;
     constructor(data?: Partial<Order>);
 }
 export interface OrderRelations {

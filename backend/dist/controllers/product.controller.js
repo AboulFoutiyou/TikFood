@@ -249,7 +249,7 @@ tslib_1.__decorate([
             },
         },
     }),
-    tslib_1.__param(0, rest_1.param.path.number('id')),
+    tslib_1.__param(0, rest_1.param.path.string('id')),
     tslib_1.__param(1, rest_1.param.filter(models_1.Product, { exclude: 'where' })),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [String, Object]),

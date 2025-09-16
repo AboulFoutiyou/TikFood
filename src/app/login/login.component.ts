@@ -36,7 +36,17 @@ export class LoginComponent  implements OnInit {
 
       },
       error: (err) => {
-        this.error = 'Email ou mot de passe incorrect';
+        // Si vendeur échoue, essayer comme client
+        this.apiService.loginClient(this.credentials).subscribe({
+          next: (response) => {
+            this.apiService.handleLoginSuccess(response);
+            this.apiService.setToken(response.token);
+            this.router.navigate(['/feed']);
+          },
+          error: (err) => {
+            this.error = 'Email ou mot de passe incorrect';
+          }
+        });
       }
     });
   }

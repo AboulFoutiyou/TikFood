@@ -234,7 +234,7 @@ export class ProductController {
     },
   })
   async findById(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @param.filter(Product, {exclude: 'where'})
     filter?: FilterExcludingWhere<Product>,
   ): Promise<Product> {

@@ -39,6 +39,14 @@ export interface VendorProfile {
   avatar?: string;
 }
 
+export interface ClientProfile {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+  phone: string;
+}
+
 export interface Analytics {
   totalOrders: number;
   totalRevenue: number;

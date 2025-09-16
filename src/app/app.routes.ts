@@ -27,7 +27,7 @@ export const routes: Routes = [
     loadComponent: () => import('./client-home/client-home.component').then((m) => m.ClientHomeComponent),
   },
   {
-    path: 'food/details',
+    path: 'food/details/:id',
     loadComponent: () => import('./food-details/food-details.component').then((m) => m.FoodDetailsComponent),
   },
   {

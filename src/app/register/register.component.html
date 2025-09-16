@@ -54,11 +54,11 @@
         <label for="role">Souhaitez vous s'inscrire en tant que: </label>
         <div class="radio-group">
           <div class="radio-option">
-            <input type="radio" id="vendeur" name="role" value="vendeur">
+            <input type="radio" id="vendeur" [(ngModel)]="role" name="role" value="vendeur">
             <label for="vendeur">Vendeur</label>
           </div>
           <div class="radio-option">
-            <input type="radio" id="client" name="role" value="client">
+            <input type="radio" id="client" name="role" [(ngModel)]="role" value="client">
             <label for="client">Client</label>
           </div>
         </div>

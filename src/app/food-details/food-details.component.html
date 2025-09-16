@@ -2,11 +2,16 @@
 
   <!-- Header avec fond orange -->
   <div class="header-offre">
-    <ion-icon name="arrow-back"></ion-icon>
+    <ion-icon name="arrow-back" (click)="goBack()"></ion-icon>
 
     <h2>Détails de l'offre</h2>
     <div class="image-container">
-      <div class="image-placeholder">Img</div>
+      <div class="image-placeholder">
+        <ion-img 
+          [src]="product?.images[0]" 
+          [alt]="product?.name"
+          class="product-image">
+        </ion-img></div>
     </div>
   </div>
 
@@ -30,24 +35,24 @@
         <!-- Restaurant Info -->
         <div class="info-item">
           <ion-icon name="restaurant-outline" class="info-icon"></ion-icon>
-          <span class="info-text">Les délices de Diarra</span>
+          <span class="info-text">{{ product?.vendorName || "Inconnu" }}</span>
         </div>
         
         <!-- Product Name -->
         <div class="product-name">
-          <span class="name-text">Plateau sale (Only)</span>
-          <ion-chip class="quantity-chip" color="light">
+          <span class="name-text" >{{ product?.name || 'Aucun Produit' }}</span>
+          <!-- <ion-chip class="quantity-chip" color="light">
             <ion-label>(Q1)</ion-label>
-          </ion-chip>
+          </ion-chip> -->
         </div>
         
         <!-- Price -->
-        <div class="price">12 000 F CFA</div>
+        <div class="price">{{ product?.price }} F CFA</div>
         
         <!-- Description -->
         <div class="description">
           <h3>Description:</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis est elit, volutpat sit pharetra nec, mollis quis urna. Duis molestie vel lorem sed tempor. Cras ornare purus sit amet maximus leo bibendum tristique. Sed eget magnis tellus, ac rutrum turpis. Praesent quis felis tortor. Cras id faucibus quam nec molestie.</p>
+          <p>{{ product?.description }}</p>
         </div>
         
         <!-- Total Price -->

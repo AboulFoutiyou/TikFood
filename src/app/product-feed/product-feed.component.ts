@@ -129,12 +129,11 @@ loadProducts(): void {
 }
   onCategoryChange(event: any): void {
     this.selectedCategory = event.detail.value;
-    console.log('Category changed to:', this.selectedCategory); // Debug log
+    // console.log('Category changed to:', this.selectedCategory); // Debug log
     this.filterProducts();
   }
 
   filterProducts(): void {
-    console.log('Filtering products for category:', this.selectedCategory); // Debug log
     if (this.selectedCategory === 'tous') {
       this.filteredProducts = [...this.products];
     } else {
@@ -142,13 +141,12 @@ loadProducts(): void {
         product => product.category === this.selectedCategory
       );
     }
-    console.log('Filtered products count:', this.filteredProducts.length); // Debug log
   }
 
   
 
-  navigateToProductDetail(productId: string): void {
-    this.router.navigate(['/product-detail'], { queryParams: { id: productId } });
+  navigateToProductDetail(product: any): void {
+    this.router.navigate(['/food/details', product.id]);
   }
 
   toggleLike(product: Product, event: Event): void {

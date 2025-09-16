@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { VendorProduct, Order, VendorProfile, Analytics } from '../vendor/models/vendor.model';
+import { VendorProduct, Order, VendorProfile, Analytics, ClientProfile } from '../vendor/models/vendor.model';
 
 export interface LoginResponse {
   token: string;
@@ -75,6 +75,23 @@ export class ApiService {
     });
   }
 
+  // ========================= CLIENT =========================
+
+  // Inscription client
+  registerClient(client: Partial<ClientProfile>): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/clients/register`, client);
+  }
+
+  // Connexion client
+  loginClient(credentials: Credentials): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/clients/login`, credentials);
+  }
+
+  // Passer une commande client
+  placeClientOrder(clientId: string, order: Order): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/clients/${clientId}/orders`, order);
+  }
+
   // ==================== AUTHENTIFICATION ====================
   
   register(vendor: Partial<VendorProfile>): Observable<LoginResponse> {
@@ -142,6 +159,10 @@ export class ApiService {
   deleteProduct(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/products/${id}`, this.getHeaders());
   }
+
+  getProductById(id: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/products/${id}`);
+}
 
   // ==================== COMMANDES ====================
   
