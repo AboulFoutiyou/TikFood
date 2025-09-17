@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { arrowBack, chevronBack, imageOutline, restaurantOutline, remove, add, bagHandleOutline } from 'ionicons/icons';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { Order } from '../vendor/models/vendor.model';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-food-details',
@@ -17,9 +19,10 @@ export class FoodDetailsComponent  implements OnInit {
   quantity = 1;
   product: any;
   basePrice = 12000; // Base price in F CFA
+  vendorName: string = 'Inconnu';
 
   constructor( private location: Location, private route: ActivatedRoute,
-    private api: ApiService ) { 
+    private api: ApiService, private alertController: AlertController ) { 
     addIcons({
       "arrow-back": arrowBack,
       'chevron-back': chevronBack,
@@ -37,10 +40,24 @@ export class FoodDetailsComponent  implements OnInit {
     if (id) {
       this.api.getProductById(id).subscribe(prod => {
         this.product = prod;
+        if (prod?.vendorId) {
+        this.api.getVendorProfile(prod.vendorId).subscribe(vendor => {
+          this.vendorName = vendor?.name || 'Inconnu';
+        });
+      }
         console.log('Product details:', this.product);
       });
     }
   }
+
+  async showConfirmation() {
+  const alert = await this.alertController.create({
+    header: 'Commande validée',
+    message: 'Votre commande a bien été envoyée !',
+    buttons: ['OK'],
+  });
+  await alert.present();
+}
 
 
 increment() {
@@ -76,9 +93,40 @@ goBack(): void {
     // Implement order placement logic
     console.log('Order placed for quantity:', this.quantity);
     console.log('Total price:', this.getTotalPrice(), 'F CFA');
+
+    if (!this.product) return;
+    const currentClient = this.api.getStoredTUser();
+    console.log('Current client:', currentClient);
+
+    const order: Omit<Order, 'id'| 'productName' | 'createdAt' | 'updatedAt' | 'vendorId'> = {
+    productId: this.product.id,
+    //productName: this.product.name,
+    customerName: currentClient ? currentClient.name : 'Inconnu',
+    customerPhone: currentClient ? currentClient.phone : 'Inconnu',
+    quantity: this.quantity,
+    totalPrice: this.product.price * this.quantity,
+    status: 'pending',
+    orderDate: new Date(),
+    deliveryAddress: currentClient ? currentClient.location : 'Inconnu',
+    notes: '', // ou récupère depuis un champ de saisie si besoin
+  };
+
+    console.log('Order details:', order);
+
+    this.api.createOrder(order).subscribe({
+    next: (res) => {
+      console.log('Commande envoyée !', res);
+      this.showConfirmation();
+      // Redirige ou affiche une confirmation ici si besoin
+    },
+    error: (err) => {
+      console.error('Erreur lors de la commande', err);
+      if (err.error?.error?.details) {
+    console.error('Détails de la validation :', err.error.error.details);
+  }
+    }
+  });
     
-    // You could navigate to a confirmation page here
-    // this.router.navigate(['/order-confirmation']);
   }
 
 }

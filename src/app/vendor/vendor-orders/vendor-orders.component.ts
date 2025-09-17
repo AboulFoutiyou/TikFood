@@ -86,7 +86,12 @@ export class VendorOrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.vendorService.orders$.subscribe(orders => {
-      this.orders = orders.sort((a, b) => b.orderDate.getTime() - a.orderDate.getTime());
+      this.orders = orders
+      .map(order => ({
+        ...order,
+        orderDate: new Date(order.orderDate)
+      }))
+      .sort((a, b) => b.orderDate.getTime() - a.orderDate.getTime());
       this.filterOrders();
     });
   }

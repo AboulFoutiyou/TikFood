@@ -170,8 +170,9 @@ tslib_1.__decorate([
 ], OrderController.prototype, "find", null);
 tslib_1.__decorate([
     (0, rest_1.get)('/orders/my-orders'),
-    (0, authentication_1.authenticate)('jwt'),
-    (0, authorization_1.authorize)({ allowedRoles: ['vendor'] }),
+    (0, authentication_1.authenticate)('jwt')
+    //@authorize({allowedRoles: ['vendor']})
+    ,
     (0, rest_1.response)(200, {
         description: 'Current vendor orders',
         content: {
@@ -191,8 +192,9 @@ tslib_1.__decorate([
 ], OrderController.prototype, "getMyOrders", null);
 tslib_1.__decorate([
     (0, rest_1.get)('/orders/analytics'),
-    (0, authentication_1.authenticate)('jwt'),
-    (0, authorization_1.authorize)({ allowedRoles: ['vendor'] }),
+    (0, authentication_1.authenticate)('jwt')
+    //@authorize({allowedRoles: ['vendor']})
+    ,
     (0, rest_1.response)(200, {
         description: 'Order analytics for current vendor',
         content: {

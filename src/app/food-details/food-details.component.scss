@@ -118,26 +118,34 @@ ion-content {
   gap: 24px;
 }
 
-.product-image-container {
+.image-container {
   display: flex;
   justify-content: center;
   margin-bottom: 8px;
 
-  .product-image, ion-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #e5e7eb, #d1d5db);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  ion-img.product-image img{
+    border-radius: 50% !important;
+  object-fit: cover;
+  width: 1700px;
+  height: 1700px;
+  display: block;
+  margin: 0 auto;
+  overflow: hidden;
+  }
 
     .image-placeholder {
-      opacity: 0.6;
-      color: #9ca3af;
+      border-radius: 50%;
+  overflow: hidden;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f3f3;
     }
-  }
+ 
+
+  
 }
 
 .product-details-card {

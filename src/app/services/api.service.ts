@@ -7,6 +7,7 @@ import { VendorProduct, Order, VendorProfile, Analytics, ClientProfile } from '.
 export interface LoginResponse {
   token: string;
   vendor: VendorProfile;
+  client?: ClientProfile;
 }
 
 export interface Credentials {
@@ -28,9 +29,18 @@ export class ApiService {
     return localStorage.getItem('vendor_token');
   }
 
+  public getStoredTUser(): any {
+    const user = localStorage.getItem('user');
+  return user ? JSON.parse(user) : null;
+  }
+
   public setToken(token: string): void {
     localStorage.setItem('vendor_token', token);
     this.tokenSubject.next(token);
+  }
+
+  public setUser(user: any): void {
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   private removeToken(): void {
@@ -166,7 +176,7 @@ export class ApiService {
 
   // ==================== COMMANDES ====================
   
-  createOrder(order: Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'vendorId'>): Observable<Order> {
+  createOrder(order: Omit<Order, 'id' | 'productName' | 'createdAt' | 'updatedAt' | 'vendorId'>): Observable<Order> {
     return this.http.post<Order>(`${this.apiUrl}/orders`, order);
   }
 

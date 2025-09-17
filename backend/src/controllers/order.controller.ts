@@ -82,7 +82,7 @@ async create(
 
   @get('/orders/my-orders')
   @authenticate('jwt')
-  @authorize({allowedRoles: ['vendor']})
+  //@authorize({allowedRoles: ['vendor']})
   @response(200, {
     description: 'Current vendor orders',
     content: {
@@ -108,7 +108,7 @@ async create(
 
   @get('/orders/analytics')
   @authenticate('jwt')
-  @authorize({allowedRoles: ['vendor']})
+  //@authorize({allowedRoles: ['vendor']})
   @response(200, {
     description: 'Order analytics for current vendor',
     content: {

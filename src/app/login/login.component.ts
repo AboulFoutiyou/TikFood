@@ -41,6 +41,8 @@ export class LoginComponent  implements OnInit {
           next: (response) => {
             this.apiService.handleLoginSuccess(response);
             this.apiService.setToken(response.token);
+            this.apiService.setUser(response.client);
+            console.log('Logged in as client:', response.client);
             this.router.navigate(['/feed']);
           },
           error: (err) => {
