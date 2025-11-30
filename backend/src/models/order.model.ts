@@ -15,11 +15,11 @@ export enum OrderStatus {
 @model()
 export class Order extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
     generated: true,
   })
-  id?: number;
+  id?: string;
 
   @property({
     type: 'string',

@@ -11,10 +11,10 @@ export declare class OrderController {
     find(filter?: Filter<Order>): Promise<Order[]>;
     getMyOrders(currentUser: UserProfile, filter?: Filter<Order>): Promise<Order[]>;
     getAnalytics(currentUser: UserProfile): Promise<any>;
-    findById(id: number, filter?: FilterExcludingWhere<Order>): Promise<Order>;
-    updateStatus(id: number, statusUpdate: {
+    findById(id: string, filter?: FilterExcludingWhere<Order>): Promise<Order>;
+    updateStatus(id: string, statusUpdate: {
         status: OrderStatus;
     }, currentUser: UserProfile): Promise<void>;
-    updateById(id: number, order: Partial<Order>, currentUser: UserProfile): Promise<void>;
-    deleteById(id: number, currentUser: UserProfile): Promise<void>;
+    updateById(id: string, order: Partial<Order>, currentUser: UserProfile): Promise<void>;
+    deleteById(id: string, currentUser: UserProfile): Promise<void>;
 }

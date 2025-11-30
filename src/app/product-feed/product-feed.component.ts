@@ -94,7 +94,11 @@ export class ProductFeedComponent  implements OnInit {
 loadProducts(): void {
   this.apiService.getProductsFeed().subscribe({
     next: (products) => {
-      this.products = products;
+      this.products = products.sort((a, b) => {
+        const dateA = new Date(a.updatedAt).getTime();
+        const dateB = new Date(b.updatedAt).getTime();
+        return dateB - dateA;
+      });
       products.forEach(product => {
         if (product.vendorId && !this.vendorProfiles[product.vendorId]) {
           this.apiService.getVendorProfile(product.vendorId).subscribe({

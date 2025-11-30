@@ -78,6 +78,7 @@ export class VendorDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.vendorService.vendorProfile$.subscribe(profile => {
       this.vendorProfile = profile;
+      console.log('Vendor Profile:', profile);
     });
 
     this.vendorService.getAnalytics().subscribe(analytics => {

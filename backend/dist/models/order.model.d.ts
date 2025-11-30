@@ -10,7 +10,7 @@ export declare enum OrderStatus {
     CANCELLED = "cancelled"
 }
 export declare class Order extends Entity {
-    id?: number;
+    id?: string;
     customerName: string;
     customerPhone: string;
     customerEmail?: string;

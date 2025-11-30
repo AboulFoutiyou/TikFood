@@ -224,7 +224,7 @@ async create(
     },
   })
   async findById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @param.filter(Order, {exclude: 'where'})
     filter?: FilterExcludingWhere<Order>,
   ): Promise<Order> {
@@ -233,12 +233,12 @@ async create(
 
   @patch('/orders/{id}/status')
   @authenticate('jwt')
-  @authorize({allowedRoles: ['vendor']})
+  //@authorize({allowedRoles: ['vendor']})
   @response(204, {
     description: 'Update order status',
   })
   async updateStatus(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
@@ -277,7 +277,7 @@ async create(
     description: 'Order PATCH success',
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
@@ -305,7 +305,7 @@ async create(
     description: 'Order DELETE success',
   })
   async deleteById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @inject(SecurityBindings.USER) currentUser: UserProfile,
   ): Promise<void> {
     const order = await this.orderRepository.findById(id);

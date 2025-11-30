@@ -23,11 +23,11 @@ let Order = class Order extends repository_1.Entity {
 exports.Order = Order;
 tslib_1.__decorate([
     (0, repository_1.property)({
-        type: 'number',
+        type: 'string',
         id: true,
         generated: true,
     }),
-    tslib_1.__metadata("design:type", Number)
+    tslib_1.__metadata("design:type", String)
 ], Order.prototype, "id", void 0);
 tslib_1.__decorate([
     (0, repository_1.property)({

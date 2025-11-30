@@ -249,20 +249,21 @@ tslib_1.__decorate([
             },
         },
     }),
-    tslib_1.__param(0, rest_1.param.path.number('id')),
+    tslib_1.__param(0, rest_1.param.path.string('id')),
     tslib_1.__param(1, rest_1.param.filter(models_1.Order, { exclude: 'where' })),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Number, Object]),
+    tslib_1.__metadata("design:paramtypes", [String, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], OrderController.prototype, "findById", null);
 tslib_1.__decorate([
     (0, rest_1.patch)('/orders/{id}/status'),
-    (0, authentication_1.authenticate)('jwt'),
-    (0, authorization_1.authorize)({ allowedRoles: ['vendor'] }),
+    (0, authentication_1.authenticate)('jwt')
+    //@authorize({allowedRoles: ['vendor']})
+    ,
     (0, rest_1.response)(204, {
         description: 'Update order status',
     }),
-    tslib_1.__param(0, rest_1.param.path.number('id')),
+    tslib_1.__param(0, rest_1.param.path.string('id')),
     tslib_1.__param(1, (0, rest_1.requestBody)({
         content: {
             'application/json': {
@@ -281,7 +282,7 @@ tslib_1.__decorate([
     })),
     tslib_1.__param(2, (0, core_1.inject)(security_1.SecurityBindings.USER)),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Number, Object, Object]),
+    tslib_1.__metadata("design:paramtypes", [String, Object, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], OrderController.prototype, "updateStatus", null);
 tslib_1.__decorate([
@@ -291,7 +292,7 @@ tslib_1.__decorate([
     (0, rest_1.response)(204, {
         description: 'Order PATCH success',
     }),
-    tslib_1.__param(0, rest_1.param.path.number('id')),
+    tslib_1.__param(0, rest_1.param.path.string('id')),
     tslib_1.__param(1, (0, rest_1.requestBody)({
         content: {
             'application/json': {
@@ -301,7 +302,7 @@ tslib_1.__decorate([
     })),
     tslib_1.__param(2, (0, core_1.inject)(security_1.SecurityBindings.USER)),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Number, Object, Object]),
+    tslib_1.__metadata("design:paramtypes", [String, Object, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], OrderController.prototype, "updateById", null);
 tslib_1.__decorate([
@@ -311,10 +312,10 @@ tslib_1.__decorate([
     (0, rest_1.response)(204, {
         description: 'Order DELETE success',
     }),
-    tslib_1.__param(0, rest_1.param.path.number('id')),
+    tslib_1.__param(0, rest_1.param.path.string('id')),
     tslib_1.__param(1, (0, core_1.inject)(security_1.SecurityBindings.USER)),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Number, Object]),
+    tslib_1.__metadata("design:paramtypes", [String, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], OrderController.prototype, "deleteById", null);
 exports.OrderController = OrderController = tslib_1.__decorate([

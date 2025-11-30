@@ -86,6 +86,7 @@ export class VendorOrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.vendorService.orders$.subscribe(orders => {
+      console.log('Fetched orders:', orders);
       this.orders = orders
       .map(order => ({
         ...order,
