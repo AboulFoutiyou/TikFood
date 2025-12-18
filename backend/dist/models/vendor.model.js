@@ -5,13 +5,27 @@ const tslib_1 = require("tslib");
 const repository_1 = require("@loopback/repository");
 const product_model_1 = require("./product.model");
 const order_model_1 = require("./order.model");
-const authentication_jwt_1 = require("@loopback/authentication-jwt");
-let Vendor = class Vendor extends authentication_jwt_1.User {
+let Vendor = class Vendor extends repository_1.Entity {
     constructor(data) {
         super(data);
     }
 };
 exports.Vendor = Vendor;
+tslib_1.__decorate([
+    (0, repository_1.property)({
+        type: 'string',
+        id: true,
+        genrated: true,
+    }),
+    tslib_1.__metadata("design:type", String)
+], Vendor.prototype, "id", void 0);
+tslib_1.__decorate([
+    (0, repository_1.property)({
+        type: 'string',
+        required: false,
+    }),
+    tslib_1.__metadata("design:type", String)
+], Vendor.prototype, "email", void 0);
 tslib_1.__decorate([
     (0, repository_1.property)({
         type: 'string',

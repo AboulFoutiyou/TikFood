@@ -4,7 +4,20 @@ import {Order} from './order.model';
 import { User } from '@loopback/authentication-jwt';
 
 @model()
-export class Vendor extends User{
+export class Vendor extends Entity {
+  @property({
+    type: 'string',
+    id: true,
+    genrated: true,
+  })
+  id: string;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  email?: string;
+
   @property({
     type: 'string',
     required: true,

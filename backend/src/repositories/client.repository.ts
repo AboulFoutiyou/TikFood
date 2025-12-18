@@ -24,4 +24,9 @@ export class ClientRepository extends DefaultCrudRepository<
     const client = await this.findOne({where: {email}});
     return client;
   }
+
+  async findByTelephone(phone: string): Promise<Client | null> {
+    const client = await this.findOne({where: {phone}});
+    return client;
+  }
 }

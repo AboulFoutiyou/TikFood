@@ -1,106 +1,93 @@
-<ion-content class="details-offre">
+<!-- Fichier HTML -->
 
-  <!-- Header avec fond orange -->
-  <div class="header-offre">
-    <ion-icon name="arrow-back" (click)="goBack()"></ion-icon>
+<ion-content [fullscreen]="true" class="product-detail-page">
+  
+  <!-- HEADER IMMERSIF -->
+  <div class="header-container">
+    <div class="header-background">
+      <ion-img 
+        [src]="product?.images[0]" 
+        [alt]="product?.name"
+        class="product-bg-image">
+      </ion-img>
+      <!-- Superposition d'un dégradé pour la lisibilité -->
+      <div class="header-scrim"></div>
+    </div>
+    
+    <!-- Barre de navigation flottante -->
+    <ion-toolbar class="floating-toolbar">
+      <ion-buttons slot="start">
+        <ion-button class="back-button" (click)="goBack()">
+          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Détails du produit</ion-title>
+    </ion-toolbar>
+  </div>
 
-    <h2>Détails de l'offre</h2>
-    <div class="image-container">
-      <div class="image-placeholder">
-        <ion-img 
-          [src]="product?.images[0]" 
-          [alt]="product?.name"
-          class="product-image">
-        </ion-img></div>
+  <!-- CONTENU PRINCIPAL (LA "CARTE") -->
+  <div class="content-container">
+    <!-- Nom du Vendeur -->
+    <div class="vendor-info-chip" (click)="navigateToVendor(product?.vendorId)">
+      <ion-avatar>
+        <!-- Idéalement, l'avatar du vendeur ici -->
+        <ion-icon name="restaurant-outline"></ion-icon>
+      </ion-avatar>
+      <ion-label>{{ vendorName }}</ion-label>
+    </div>
+    
+    <!-- Titre et Prix -->
+    <div class="title-section">
+      <h1 class="product-name">{{ product?.name || 'Aucun Produit' }}</h1>
+      <div class="product-price">{{ formatPrice(product?.price) }} F CFA</div>
+    </div>
+
+    <!-- Description -->
+    <div class="description-section">
+      <h3>Description</h3>
+      <p>{{ product?.description }}</p>
+    </div>
+
+    <!-- Sélecteur de Quantité -->
+    <div class="quantity-section">
+      <h3>Quantité</h3>
+      <div class="quantity-selector">
+        <ion-button 
+          fill="clear" 
+          class="quantity-btn"
+          (click)="decreaseQuantity()"
+          [disabled]="quantity <= 1">
+          <ion-icon name="remove-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        
+        <span class="quantity-display">{{ quantity }}</span>
+        
+        <ion-button 
+          fill="clear" 
+          class="quantity-btn"
+          (click)="increaseQuantity()">
+          <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
     </div>
   </div>
 
-  <!-- Contenu de l'offre -->
-  <div class="offre-content">
-
-    
-    <div class="content-wrapper">
-    <!-- Product Image -->
-    <!-- <div class="product-image-container">
-      <div class="product-image">
-        <div class="image-placeholder">
-          <ion-icon name="image-outline" size="large"></ion-icon>
-        </div>
+  <!-- FOOTER COLLANT POUR LA COMMANDE -->
+<ion-footer class="order-footer">
+  <ion-toolbar>
+    <div class="footer-content">
+      <div class="total-price-section">
+        <span class="total-label">Total</span>
+        <span class="total-amount">{{ getTotalPrice() }} F CFA</span>
       </div>
-    </div> -->
-
-    <!-- Product Details Card -->
-    <ion-card class="product-details-card">
-      <ion-card-content>
-        <!-- Restaurant Info -->
-        <div class="info-item">
-          <ion-icon name="restaurant-outline" class="info-icon"></ion-icon>
-          <span class="info-text">{{ vendorName }}</span>
-        </div>
-        
-        <!-- Product Name -->
-        <div class="product-name">
-          <span class="name-text" >{{ product?.name || 'Aucun Produit' }}</span>
-          <!-- <ion-chip class="quantity-chip" color="light">
-            <ion-label>(Q1)</ion-label>
-          </ion-chip> -->
-        </div>
-        
-        <!-- Price -->
-        <div class="price">{{ product?.price }} F CFA</div>
-        
-        <!-- Description -->
-        <div class="description">
-          <h3>Description:</h3>
-          <p>{{ product?.description }}</p>
-        </div>
-        
-        <!-- Total Price -->
-        <div class="total-price">
-          <div class="total-label">Prix total:</div>
-          <div class="total-amount">{{ getTotalPrice() }} F CFA</div>
-        </div>
-        
-        <!-- Quantity Selector -->
-        <div class="quantity-selector">
-          <ion-button 
-            fill="outline" 
-            shape="round" 
-            size="small"
-            color="warning"
-            (click)="decreaseQuantity()"
-            [disabled]="quantity <= 1">
-            <ion-icon name="remove" slot="icon-only"></ion-icon>
-          </ion-button>
-          
-          <span class="quantity-display">{{ quantity }}</span>
-          
-          <ion-button 
-            fill="outline" 
-            shape="round" 
-            size="small"
-            color="warning"
-            (click)="increaseQuantity()">
-            <ion-icon name="add" slot="icon-only"></ion-icon>
-          </ion-button>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Order Button -->
-    <div class="order-section">
       <ion-button 
-        expand="block" 
-        shape="round" 
-        size="large"
         class="order-button"
         (click)="placeOrder()">
-        <ion-icon name="bag-handle-outline" slot="start"></ion-icon>
-        Commander
+        Ajouter à la commande
+        <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
       </ion-button>
     </div>
-  </div>
-
-  </div>
+  </ion-toolbar>
+</ion-footer>
 
 </ion-content>

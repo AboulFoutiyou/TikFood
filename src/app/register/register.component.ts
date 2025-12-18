@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 
 @Component({
@@ -23,9 +24,27 @@ export class RegisterComponent  implements OnInit {
   region: string = '';
   step: number = 1;
 
-  constructor(private api: ApiService, private router: Router) { }
+  constructor(private api: ApiService, private router: Router, private toast: ToastController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.role = '';
+  }
+
+  async presentToast(message: string, color: 'success' | 'danger') {
+    const toast = await this.toast.create({
+      message: message,
+      duration: 3000, // Le toast disparaît après 3 secondes
+      position: 'top', // 'top', 'bottom', ou 'middle'
+      color: color,    // Utilise les couleurs du thème Ionic
+      buttons: [
+        {
+          icon: 'close',
+          role: 'cancel'
+        }
+      ]
+    });
+    await toast.present();
+  }
 
   nextStep() {
     this.step++;
@@ -38,6 +57,8 @@ export class RegisterComponent  implements OnInit {
   onSubmit() {
     if (this.password !== this.confirmPassword) {
       console.error('Les mots de passe ne correspondent pas');
+      this.presentToast('Les mots de passe ne correspondent pas', 'danger');
+      this.step = 2;
       return;
     }
     
@@ -55,27 +76,30 @@ export class RegisterComponent  implements OnInit {
       this.api.register(userData).subscribe({
         next: (res) => {
           console.log('Inscription vendeur réussie', res);
+          this.presentToast('Inscription réussie !', 'success');
           this.api.setToken(res.token);
           this.router.navigate(['/vendor-dashboard']);
         },
         error: (err) => {
           console.error('Erreur d’inscription vendeur', err);
+          this.presentToast(err.error.error.message, 'danger');
         }
       });
     } else if (this.role === 'client') {
       this.api.registerClient(userData).subscribe({
         next: (res) => {
-          console.log('Inscription client réussie', res);
-          // Si tu veux stocker le token client, ajoute une méthode dédiée
-          // this.api.setClientToken(res.token);
+          this.api.setToken(res.token);
+          this.api.setUser(res.client);
           this.router.navigate(['/feed']);
         },
         error: (err) => {
           console.error('Erreur d’inscription client', err);
+          this.presentToast(err.error.error.message, 'danger');
         }
       });
     } else {
       console.error('Rôle non reconnu');
+      this.presentToast('Veuillez choisir un role', 'danger');
     }
   } 
   

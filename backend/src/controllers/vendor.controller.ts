@@ -27,6 +27,9 @@ import {VendorUserService} from '../services/vendor-user.service';
 import {Credentials} from '../types';
 import {validateCredentials} from '../services/validator.service';
 import * as bcrypt from 'bcryptjs';
+import { OrderStatus } from '../models';
+import { HttpErrors } from '@loopback/rest';
+import { ClientRepository } from '../repositories';
 
 export class VendorController {
   constructor(
@@ -34,6 +37,8 @@ export class VendorController {
     public vendorRepository: VendorRepository,
     @inject('services.VendorUserService')
     public vendorUserService: VendorUserService,
+    @repository(ClientRepository)
+    public clientRepository: ClientRepository,
   ) {}
 
   @post('/vendors/register')
@@ -68,7 +73,45 @@ export class VendorController {
     console.log('--- REQUÊTE REÇUE SUR /vendors/register ---');
         console.log('Données brutes reçues :', JSON.stringify(vendor, null, 2));
         
-    validateCredentials({email: vendor.email, password: vendor.password});
+    if (vendor.email) {
+      validateCredentials({email: vendor.email, password: vendor.password});
+    }
+
+    if (vendor.phone) {
+      validateCredentials({phone: vendor.phone, password: vendor.password});
+    }
+
+    // Check if email or phone already exists in vendors
+    if (vendor.email) {
+      const existingVendor = await this.vendorRepository.findOne({ 
+        where: {email: vendor.email},
+      });
+      if (existingVendor) {
+        throw new HttpErrors.UnprocessableEntity('Un compte avec cet email existe déjà');
+      }
+
+      const existingClient= await this.clientRepository.findOne({
+        where: {email: vendor.email},
+      });
+      if (existingClient) {
+        throw new HttpErrors.UnprocessableEntity('Un compte client avec cet email existe déjà');
+      }
+    }
+
+    if (vendor.phone) {
+      const existingVendorByPhone = await this.vendorRepository.findOne({
+        where: {phone: vendor.phone},
+      });
+      if (existingVendorByPhone) {
+        throw new HttpErrors.UnprocessableEntity('Un compte avec ce numéro de téléphone existe déjà');
+      }
+      const existingClientByPhone = await this.clientRepository.findOne({
+        where: {phone: vendor.phone},
+      });
+      if (existingClientByPhone) {
+        throw new HttpErrors.UnprocessableEntity('Un compte client avec ce numéro de téléphone existe déjà');
+      }
+    }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(vendor.password, 10);
@@ -106,9 +149,10 @@ export class VendorController {
         'application/json': {
           schema: {
             type: 'object',
-            required: ['email', 'password'],
+            required: ['password'],
             properties: {
               email: {type: 'string', format: 'email'},
+              phone: {type: 'string'},
               password: {type: 'string', minLength: 8},
             },
           },
@@ -203,16 +247,15 @@ export class VendorController {
 
   @patch('/vendors/{id}')
   @authenticate('jwt')
-  @authorize({allowedRoles: ['vendor']})
   @response(204, {
     description: 'Vendor PATCH success',
   })
   async updateById(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Vendor, {partial: true, exclude: ['id', 'email']}),
+          schema: getModelSchemaRef(Vendor, {partial: true, exclude: ['id', 'createdAt', 'password']}),
         },
       },
     })
@@ -221,7 +264,29 @@ export class VendorController {
   ): Promise<void> {
     // Ensure vendor can only update their own profile
     if (currentUser.id !== id) {
-      throw new Error('Unauthorized');
+      throw new HttpErrors.Unauthorized('Non autorisé');
+    }
+
+    // Verify if phone number is being updated and is unique
+    if (vendor.phone) {
+      const existingVendor = await this.vendorRepository.findOne({
+        where: {
+          phone: vendor.phone,
+          id: {neq: id},
+        },
+      });
+      if (existingVendor) {
+        throw new HttpErrors.UnprocessableEntity('Un compte avec ce numéro de téléphone existe déjà');
+      }
+
+      const existingClient = await this.clientRepository.findOne({
+        where: {
+          phone: vendor.phone,
+        },
+      });
+      if (existingClient) {
+        throw new HttpErrors.UnprocessableEntity('Un compte client avec ce numéro de téléphone existe déjà');
+      }
     }
 
     vendor.updatedAt = new Date();
@@ -251,7 +316,6 @@ export class VendorController {
 
   @del('/vendors/{id}')
   @authenticate('jwt')
-  @authorize({allowedRoles: ['vendor']})
   @response(204, {
     description: 'Vendor DELETE success',
   })
@@ -260,8 +324,79 @@ export class VendorController {
     @inject(SecurityBindings.USER) currentUser: UserProfile,
   ): Promise<void> {
     if (currentUser.id !== id) {
-      throw new Error('Unauthorized');
+      throw new HttpErrors.Unauthorized('Non autorisé');
     }
+    // Verify if vendor has associated orders that are not completed or cancelled
+    // Essayons de voir s'il y a une commande associée à ce vendeur non complétée ni annulée
+    const orders = await this.vendorRepository.orders(id).find({
+      where: {
+        and: [
+        {status: {neq: OrderStatus.DELIVERED}},
+        {status: {neq: OrderStatus.CANCELLED}},
+      ],
+      },
+    });
+
+    if (orders.length > 0) {
+      throw new HttpErrors.BadRequest(
+        'Impossible de supprimer le compte. Des commandes en cours existent.',
+      );
+    }
+
+    // Rendre les produits du vendeur inactifs avant la suppression
+    await this.vendorRepository.products(id).patch(
+      {isAvailable: false, updatedAt: new Date()},
+      {},
+    );
+    
     await this.vendorRepository.deleteById(id);
+  }
+
+  // Change vendor password
+  @post('/vendors/{id}/change-password')
+  @authenticate('jwt')
+  @response(204, {
+    description: 'Change vendor password',
+  })
+  async changePassword(
+    @param.path.string('id') id: string,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            required: ['oldPassword', 'newPassword'],
+            properties: {
+              oldPassword: {type: 'string'},
+              newPassword: {type: 'string', minLength: 8},
+            },
+          },
+        },
+      }, 
+    })
+    passwords: {oldPassword: string; newPassword: string},
+    @inject(SecurityBindings.USER) currentUser: UserProfile,
+  ): Promise<void> {
+    if (currentUser.id !== id) {
+      throw new HttpErrors.Unauthorized('Non autorisé');
+    }
+    const vendor = await this.vendorRepository.findById(id);
+
+    // Verify old password
+    const passwordMatched = await bcrypt.compare(
+      passwords.oldPassword,
+      vendor.password,
+    );
+    if (!passwordMatched) {
+      throw new HttpErrors.Unauthorized('Ancien mot de passe incorrect.');
+    }
+    // Validate new password
+    validateCredentials({email: vendor.email, password: passwords.newPassword});
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(passwords.newPassword, 10);  
+    await this.vendorRepository.updateById(id, {
+      password: hashedPassword,
+      updatedAt: new Date(),
+    });
   }
 }

@@ -7,7 +7,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'feed',
     pathMatch: 'full',
   },
   {
@@ -49,5 +49,21 @@ export const routes: Routes = [
   {
     path: 'vendor-analytics',
     loadComponent: () => import('./vendor/vendor-analytics/vendor-analytics.component').then(m => m.VendorAnalyticsComponent)
+  },
+  {
+    path: 'cart',
+    loadComponent: () => import('./cart/cart.component').then(m => m.CartComponent)
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./user-profile/user-profile.component').then(m => m.UserProfileComponent)
+  },
+  {
+    path: 'modifier-profil',
+    loadComponent: () => import('./edit-profile/edit-profile.component').then(m => m.EditProfileComponent)
+  },
+  {
+    path: 'change-password',
+    loadComponent: () => import('./change-password/change-password.component').then(m => m.ChangePasswordComponent)
   }
 ];

@@ -1,0 +1,35 @@
+<!-- Fichier .html du composant CustomHeader -->
+<div class="custom-header">
+  <div class="header-left">
+    
+    <!-- AVATAR - On clique dessus pour aller au profil -->
+    <div class="user-avatar" (click)="navigateToProfile()">
+      
+      <!-- Sinon, on affiche ses initiales -->
+      <div class="initials-avatar">
+        <span>{{ getInitials(clientProfile?.name) }}</span>
+      </div>
+    </div>
+
+    <!-- LOCALISATION -->
+    <div class="location-info" (click)="changeLocation()">
+      <div class="location-label">Livrer à</div>
+      <div class="location-text">
+        <ion-icon name="location-outline" class="location-icon"></ion-icon>
+        <!-- Affiche la localisation de l'utilisateur ou une valeur par défaut -->
+        <span>{{ clientProfile?.location || 'Unknown' }}</span>
+        <ion-icon name="chevron-down-outline" class="chevron-icon"></ion-icon>
+      </div>
+    </div>
+
+  </div>
+  
+  <div class="header-right">
+    <app-theme-toggle></app-theme-toggle>
+    <ion-button fill="clear" class="cart-button" (click)="navigateToCart()">
+      <ion-icon name="bag-handle-outline" slot="icon-only"></ion-icon>
+      <!-- Optionnel : ajouter un badge pour le nombre d'articles -->
+      <ion-badge color="danger" *ngIf="cartItemCount > 0">{{ cartItemCount }}</ion-badge>
+    </ion-button>
+  </div>
+</div>

@@ -17,6 +17,10 @@ let ClientRepository = class ClientRepository extends repository_1.DefaultCrudRe
         const client = await this.findOne({ where: { email } });
         return client;
     }
+    async findByTelephone(phone) {
+        const client = await this.findOne({ where: { phone } });
+        return client;
+    }
 };
 exports.ClientRepository = ClientRepository;
 exports.ClientRepository = ClientRepository = tslib_1.__decorate([

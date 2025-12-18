@@ -4,8 +4,7 @@ exports.Client = void 0;
 const tslib_1 = require("tslib");
 const repository_1 = require("@loopback/repository");
 const order_model_1 = require("./order.model");
-const authentication_jwt_1 = require("@loopback/authentication-jwt");
-let Client = class Client extends authentication_jwt_1.User {
+let Client = class Client extends repository_1.Entity {
     constructor(data) {
         super(data);
     }
@@ -14,10 +13,25 @@ exports.Client = Client;
 tslib_1.__decorate([
     (0, repository_1.property)({
         type: 'string',
+        id: true,
+        genrated: true,
+    }),
+    tslib_1.__metadata("design:type", String)
+], Client.prototype, "id", void 0);
+tslib_1.__decorate([
+    (0, repository_1.property)({
+        type: 'string',
         required: true,
     }),
     tslib_1.__metadata("design:type", String)
 ], Client.prototype, "name", void 0);
+tslib_1.__decorate([
+    (0, repository_1.property)({
+        type: 'string',
+        required: false, // rend l'email optionnel
+    }),
+    tslib_1.__metadata("design:type", String)
+], Client.prototype, "email", void 0);
 tslib_1.__decorate([
     (0, repository_1.property)({
         type: 'string',

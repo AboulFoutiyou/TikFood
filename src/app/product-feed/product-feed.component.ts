@@ -30,7 +30,7 @@ import {
   locationOutline
 } from 'ionicons/icons';
 import { ApiService } from '../services/api.service';
-import { VendorProduct } from '../vendor/models/vendor.model';
+import { ClientProfile, VendorProduct } from '../vendor/models/vendor.model';
 import { VendorProfile } from '../vendor/models/vendor.model';
 
 export interface Product {
@@ -73,7 +73,9 @@ export class ProductFeedComponent  implements OnInit {
   selectedCategory: string = 'tous';
   products: VendorProduct[] = [];
   vendorProfile: VendorProfile | null = null;
+  clientProfile: ClientProfile | null = null;
   vendorProfiles: { [vendorId: string]: VendorProfile } = {};
+  isLoggedIn: boolean = false;
 
   filteredProducts: VendorProduct[] = [];
 
@@ -90,6 +92,7 @@ export class ProductFeedComponent  implements OnInit {
 
     // Initialize filtered products
     this.filteredProducts = [...this.products];
+    this.isLoggedIn = this.apiService.isAuthenticated();
   }
 loadProducts(): void {
   this.apiService.getProductsFeed().subscribe({
@@ -116,6 +119,7 @@ loadProducts(): void {
   ngOnInit() : void {
     this.filterProducts();
     this.loadProducts();
+    this.loadClientProfile();
     // for (const product of this.products) {
     //   this.loadVendorProfile(product.vendorId);
     // }
@@ -131,6 +135,27 @@ loadProducts(): void {
         }
   }); 
 }
+
+loadClientProfile(): void {
+  this.apiService.getCurrentClient().subscribe({
+    next: (profile) => {
+      this.clientProfile = profile;
+      console.log('Profil du client', this.clientProfile);
+    },
+    error: (err) => {
+      console.error('Erreur lors du chargement du profil du client :', err);
+    }
+  })
+}
+
+navigateToLogin(): void {
+    this.router.navigate(['/login']);
+  }
+
+  navigateToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
   onCategoryChange(event: any): void {
     this.selectedCategory = event.detail.value;
     // console.log('Category changed to:', this.selectedCategory); // Debug log

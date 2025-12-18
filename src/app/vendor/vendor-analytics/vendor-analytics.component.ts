@@ -122,6 +122,7 @@ export class VendorAnalyticsComponent implements OnInit {
   }
 
   getTotalWeeklyOrders(): number {
+    console.log('Weekly Orders:', this.analytics?.weeklyOrders);
     return this.analytics?.weeklyOrders.reduce((a, b) => a + b, 0) || 0;
   }
 

@@ -85,7 +85,7 @@ export class FoodMarketplaceApplication extends BootMixin(
     
 
     // Bind user service
-    this.bind(UserServiceBindings.USER_SERVICE).toClass(VendorUserService);
+    //this.bind(UserServiceBindings.USER_SERVICE).toClass(VendorUserService);
 
     this.bind('authorization.authorize').to(authorize);
 

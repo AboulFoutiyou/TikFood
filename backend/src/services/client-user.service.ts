@@ -16,21 +16,26 @@ export class ClientUserService implements UserService<Client, Credentials> {
   ) {}
 
   async verifyCredentials(credentials: Credentials): Promise<Client> {
-    const invalidCredentialsError = 'Invalid email or password.';
-    const foundClient = await this.clientRepository.findByEmail(credentials.email);
+    let foundClient: Client | null = null;
+    if (credentials.email) {
+      foundClient = await this.clientRepository.findByEmail(credentials.email);
+    } else if (credentials.phone) {
+      foundClient = await this.clientRepository.findByTelephone(credentials.phone!);
+    }
+
     if (!foundClient) {
-      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+      throw new HttpErrors.Unauthorized('Email ou numéro de téléphone invalide.');
     }
     const credentialsFound = await this.clientRepository.findById(foundClient.id);
     if (!credentialsFound) {
-      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+      throw new HttpErrors.Unauthorized('Utilisateur non trouvé.');
     }
     const passwordMatched = await compare(
       credentials.password,
       credentialsFound.password,
     );
     if (!passwordMatched) {
-      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+      throw new HttpErrors.Unauthorized('Mot de passe incorrect.');
     }
     return credentialsFound;
   }
@@ -64,7 +69,7 @@ export class ClientUserService implements UserService<Client, Credentials> {
       expiresIn: '7d',
     };
 
-    const token = jwt.sign(userProfile, secret, options);
+    const token = jwt.sign(userProfile, secret);
 
     return token;
   }

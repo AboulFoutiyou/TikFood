@@ -3,12 +3,25 @@ import {Order} from './order.model';
 import { User } from '@loopback/authentication-jwt';
 
 @model()
-export class Client extends User {
+export class Client extends Entity {
+  @property({
+    type: 'string',
+    id: true,
+    genrated: true,
+  })
+  id: string;
+
   @property({
     type: 'string',
     required: true,
   })
   name: string;
+
+  @property({
+    type: 'string',
+    required: false, // rend l'email optionnel
+  })
+  email?: string;
 
   @property({
     type: 'string',

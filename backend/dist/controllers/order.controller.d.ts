@@ -11,6 +11,8 @@ export declare class OrderController {
     find(filter?: Filter<Order>): Promise<Order[]>;
     getMyOrders(currentUser: UserProfile, filter?: Filter<Order>): Promise<Order[]>;
     getAnalytics(currentUser: UserProfile): Promise<any>;
+    getWeeklyRevenueByWeekday(orders: any[], referenceDate?: Date): number[];
+    getWeeklyCountsByWeekday(orders: any[], referenceDate?: Date): any[];
     findById(id: string, filter?: FilterExcludingWhere<Order>): Promise<Order>;
     updateStatus(id: string, statusUpdate: {
         status: OrderStatus;

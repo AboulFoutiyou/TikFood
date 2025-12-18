@@ -78,12 +78,13 @@ export class VendorDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.vendorService.vendorProfile$.subscribe(profile => {
       this.vendorProfile = profile;
-      console.log('Vendor Profile:', profile);
     });
 
     this.vendorService.getAnalytics().subscribe(analytics => {
       this.analytics = analytics;
     });
+
+    this.weeklyOrdersTotal;
   }
 
   toggleAvailability(): void {
@@ -100,6 +101,10 @@ export class VendorDashboardComponent implements OnInit {
 
   navigateToAnalytics(): void {
     this.router.navigate(['/vendor-analytics']);
+  }
+
+  navigateToPofile(): void {
+    this.router.navigate(['/profile']);
   }
 
   formatPrice(price: number): string {

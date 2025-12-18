@@ -20,6 +20,10 @@ let VendorRepository = class VendorRepository extends repository_1.DefaultCrudRe
         const vendor = await this.findOne({ where: { email } });
         return vendor;
     }
+    async findByTelephone(phone) {
+        const vendor = await this.findOne({ where: { phone } });
+        return vendor;
+    }
 };
 exports.VendorRepository = VendorRepository;
 exports.VendorRepository = VendorRepository = tslib_1.__decorate([

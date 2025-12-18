@@ -1,0 +1,73 @@
+<ion-header class="cart-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mes Commandes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="cart-content">
+  <!-- État si le chargement est en cours ou si la liste est vide -->
+  <div *ngIf="!orders || orders.length === 0" class="empty-state">
+    <ion-icon name="receipt-outline"></ion-icon>
+    <h3>Aucune commande</h3>
+    <p>Vous n'avez pas encore passé de commande.</p>
+    <ion-button fill="clear" routerLink="/feed">Découvrir nos produits</ion-button>
+  </div>
+
+  <!-- Liste des commandes -->
+  <ion-list *ngIf="orders && orders.length > 0" class="order-list" [inset]="true">
+    <div *ngFor="let order of orders" class="order-card">
+      <div class="order-card-header">
+        <div class="product-info">
+          <!-- Idéalement, il faudrait l'image du produit ici -->
+          <div class="product-image-placeholder">
+            <ion-icon name="fast-food-outline"></ion-icon>
+          </div>
+          <div class="product-details">
+            <h2 class="product-name">{{ order.productName }}</h2>
+            <p class="order-date">{{ order.orderDate | date:'dd MMMM yyyy, HH:mm' }}</p>
+          </div>
+        </div>
+        <div class="order-price">{{ order.totalPrice | number }} F CFA</div>
+      </div>
+
+      <div class="order-card-body">
+        <!-- Barre de statut visuelle -->
+        <div class="status-tracker">
+          <div class="status-item" [class.active]="isStatusActive(order.status, 'pending')" [class.completed]="isStatusCompleted(order.status, 'pending')">
+            <div class="dot"></div>
+            <div class="label">Reçue</div>
+          </div>
+          <div class="line"></div>
+          <div class="status-item" [class.active]="isStatusActive(order.status, 'preparing')" [class.completed]="isStatusCompleted(order.status, 'preparing')">
+            <div class="dot"></div>
+            <div class="label">En préparation</div>
+          </div>
+          <div class="line"></div>
+          <div class="status-item" [class.active]="isStatusActive(order.status, 'ready')" [class.completed]="isStatusCompleted(order.status, 'ready')">
+            <div class="dot"></div>
+            <div class="label">Prête</div>
+          </div>
+          <div class="line"></div>
+          <div class="status-item" [class.active]="isStatusActive(order.status, 'delivered')" [class.completed]="isStatusCompleted(order.status, 'delivered')">
+            <div class="dot"></div>
+            <div class="label">Livrée</div>
+          </div>
+        </div>
+
+        <!-- Cas spécial pour une commande annulée -->
+        <div *ngIf="order.status === 'cancelled'" class="cancelled-status">
+          <ion-icon name="close-circle-outline"></ion-icon>
+          <span>Commande Annulée</span>
+        </div>
+      </div>
+
+      <div class="order-card-footer">
+        <ion-button fill="clear" size="small">Voir les détails</ion-button>
+      </div>
+    </div>
+  </ion-list>
+
+</ion-content>

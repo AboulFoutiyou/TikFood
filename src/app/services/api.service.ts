@@ -11,7 +11,8 @@ export interface LoginResponse {
 }
 
 export interface Credentials {
-  email: string;
+  email?: string;
+  phone?: string;
   password: string;
 }
 
@@ -102,6 +103,26 @@ export class ApiService {
     return this.http.post<any>(`${this.apiUrl}/clients/${clientId}/orders`, order);
   }
 
+  // Lister les commandes du client
+  getClientOrders(clientId: string): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/clients/${clientId}/orders`, this.getHeaders());
+  }
+
+  // Supprimer le compte client
+  deleteClientAccount(clientId: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/clients/${clientId}/delete`, this.getHeaders());
+  }
+
+  // Mettre à jour le profil client
+  updateClientProfile(clientId: string, updates: Partial<ClientProfile>): Observable<ClientProfile> {
+    return this.http.post<ClientProfile>(`${this.apiUrl}/clients/${clientId}/update`, updates, this.getHeaders());
+  }
+
+  // Changer le mot de passe client
+  changeClientPassword(clientId: string, oldPassword: string, newPassword: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/clients/${clientId}/change-password`, { oldPassword: oldPassword, newPassword: newPassword }, this.getHeaders());
+  }
+
   // ==================== AUTHENTIFICATION ====================
   
   register(vendor: Partial<VendorProfile>): Observable<LoginResponse> {
@@ -114,10 +135,15 @@ export class ApiService {
 
   logout(): void {
     this.removeToken();
+    localStorage.removeItem('user');
   }
 
   getCurrentVendor(): Observable<VendorProfile> {
     return this.http.get<VendorProfile>(`${this.apiUrl}/vendors/me`, this.getHeaders());
+  }
+
+  getCurrentClient(): Observable<ClientProfile> {
+    return this.http.get<ClientProfile>(`${this.apiUrl}/clients/me`, this.getHeaders());
   }
 
   updateVendorProfile(id: string, updates: Partial<VendorProfile>): Observable<void> {
@@ -130,6 +156,14 @@ export class ApiService {
 
   getVendorProfile(id: string): Observable<VendorProfile> {
     return this.http.get<VendorProfile>(`${this.apiUrl}/vendors/${id}`, this.getHeaders());
+  }
+
+  deleteVendorAccount(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/vendors/${id}`, this.getHeaders());
+  }
+
+  changeVendorPassword(id: string, oldPassword: string, newPassword: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/vendors/${id}/change-password`, { oldPassword: oldPassword, newPassword: newPassword }, this.getHeaders());
   }
 
   // ==================== PRODUITS ====================

@@ -16,16 +16,30 @@ import { Router } from '@angular/router';
 export class LoginComponent  implements OnInit {
   email: string = '';
   password: string = '';
-  credentials: Credentials = { 'email': '', 'password': '' };
+  credentials: Credentials = { 'email': '', 'phone':'', 'password': '' };
   error: string | null = null;
+  identifier: string = '';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {}
 
   onSubmit() {
-    console.log('Email:', this.email);
-    console.log('Mot de passe:', this.password);
+    const id = (this.identifier || '').trim();
+
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id);
+    const isPhone = /^[0-9+\s()-]{6,}$/.test(id);
+
+    if (isEmail) {
+      this.credentials.email = id;
+      this.credentials.phone = undefined;
+    } else if (isPhone) {
+      this.credentials.phone = id;
+      this.credentials.email = undefined;
+    } else {
+      this.error = 'Veuillez entrer une adresse email ou un numéro de téléphone valide.';
+      return;
+    }
     // Ajoute ici ton appel à une API ou ta logique de connexion
     this.apiService.login(this.credentials).subscribe({
       next: (response) => {
@@ -36,19 +50,23 @@ export class LoginComponent  implements OnInit {
 
       },
       error: (err) => {
+        this.error = err.error.error.message;
+        console.error('Login vendor failed:', this.error);
         // Si vendeur échoue, essayer comme client
+        if (err.error.error.message != 'Mot de passe incorrect.') {
         this.apiService.loginClient(this.credentials).subscribe({
           next: (response) => {
             this.apiService.handleLoginSuccess(response);
             this.apiService.setToken(response.token);
             this.apiService.setUser(response.client);
-            console.log('Logged in as client:', response.client);
             this.router.navigate(['/feed']);
           },
           error: (err) => {
-            this.error = 'Email ou mot de passe incorrect';
+            console.error('Login failed:', err);
+            this.error = err.error.error.message;
           }
         });
+        } 
       }
     });
   }

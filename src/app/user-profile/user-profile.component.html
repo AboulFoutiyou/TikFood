@@ -1,0 +1,83 @@
+<ion-header class="profile-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mon Profil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="profile-content">
+  <!-- Section d'identification de l'utilisateur -->
+  <div class="profile-summary" *ngIf="userProfile">
+    <div class="avatar-container">
+      <!-- Mettez ici l'avatar de l'utilisateur s'il existe -->
+      <div class="initials-avatar">
+        <span>{{ getInitials(userProfile.name) }}</span>
+      </div>
+    </div>
+    <h2 class="user-name">{{ userProfile.name }}</h2>
+    <p class="user-email">{{ userProfile.email }}</p>
+  </div>
+
+  <!-- Si le profil n'est pas chargé, on peut afficher un squelette -->
+  <div class="profile-summary" *ngIf="!userProfile">
+    <div class="avatar-container">
+      <ion-skeleton-text animated class="initials-avatar-skeleton"></ion-skeleton-text>
+    </div>
+    <ion-skeleton-text animated class="user-name-skeleton"></ion-skeleton-text>
+    <ion-skeleton-text animated class="user-email-skeleton"></ion-skeleton-text>
+  </div>
+
+  <!-- Liste des actions principales -->
+  <ion-list class="action-list" [inset]="true">
+    <ion-list-header>
+      <ion-label>Mon Activité</ion-label>
+    </ion-list-header>
+
+    <ion-item button detail="true" (click)="navigateTo('/cart')" *ngIf="role === 'client'">
+      <ion-icon name="receipt-outline" slot="start" color="primary" ></ion-icon>
+      <ion-label>Mes commandes</ion-label>
+    </ion-item>
+    
+    <ion-item button="false" detail="false" (click)="navigateTo('/mes-favoris')" [class.disabled-item]="true">
+      <ion-icon name="heart-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>Mes favoris</ion-label>
+      <p>Bientôt disponible</p>
+    </ion-item>
+    
+    <ion-item button="false" detail="false" (click)="navigateTo('/adresses')" [class.disabled-item]="true">
+      <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>Mes adresses</ion-label>
+      <p>Bientôt disponible</p>
+    </ion-item>
+  </ion-list>
+
+  <!-- Liste des paramètres du compte -->
+  <ion-list class="action-list" [inset]="true">
+    <ion-list-header>
+      <ion-label>Mon Compte</ion-label>
+    </ion-list-header>
+
+    <ion-item button detail="true" (click)="navigateTo('/modifier-profil')">
+      <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+      <ion-label>Modifier mes informations</ion-label>
+    </ion-item>
+    
+    <ion-item button detail="true" (click)="navigateTo('/change-password')">
+      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
+      <ion-label>Sécurité</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Zone des actions de déconnexion et suppression -->
+  <div class="danger-zone">
+    <ion-button expand="block" fill="clear" color="dark" (click)="logout()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      Se déconnecter
+    </ion-button>
+    <ion-button expand="block" fill="clear" color="danger" (click)="confirmDeleteAccount()">
+      Supprimer mon compte
+    </ion-button>
+  </div>
+</ion-content>

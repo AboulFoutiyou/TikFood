@@ -11,4 +11,5 @@ export declare class VendorRepository extends DefaultCrudRepository<Vendor, type
     readonly orders: HasManyRepositoryFactory<Order, typeof Vendor.prototype.id>;
     constructor(dataSource: MongodbDataSource, productRepositoryGetter: Getter<ProductRepository>, orderRepositoryGetter: Getter<OrderRepository>);
     findByEmail(email: string): Promise<Vendor | null>;
+    findByTelephone(phone: string): Promise<Vendor | null>;
 }

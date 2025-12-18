@@ -9,20 +9,6 @@
         <div *ngIf="step === 1">
         <h3>1- Informations personelles</h3>
 
-        <label for="email">Email</label>
-        <input type="email" id="email"
-        name="email"
-        [(ngModel)]="email"
-        required
-        email
-        #emailField="ngModel" placeholder="Un format d'email valide">
-
-        <!-- Message d'erreur email -->
-        <div class="error" *ngIf="emailField.invalid && emailField.touched">
-          <small *ngIf="emailField.errors?.['required']">Email requis</small>
-          <small *ngIf="emailField.errors?.['email']">Format invalide</small>
-        </div>
-
         <label for="name">Nom complet </label>
         <input type="text" id="name" 
         name="nom"
@@ -39,6 +25,18 @@
         name="telephone"
         [(ngModel)]="telephone"
         placeholder="Entrez un numero valide">
+
+        <label for="email">Email (optionnel)</label>
+        <input type="email" id="email"
+        name="email"
+        [(ngModel)]="email"
+        email
+        #emailField="ngModel" placeholder="Un format d'email valide">
+
+        <!-- Message d'erreur email -->
+        <div class="error" *ngIf="emailField.invalid && emailField.touched">
+          <small *ngIf="emailField.errors?.['email']">Format invalide</small>
+        </div>
 
         <button type="submit" class="login-btn" [disabled]="!loginForm.valid" (click)="nextStep()">Suivant ></button>
       </div>
@@ -65,7 +63,7 @@
 
         <div class="button-group">
           <button type="button" class="previous-btn" (click)="prevStep()">Précédent</button>
-          <button type="button" class="login-btn" [disabled]="!loginForm.valid" (click)="nextStep()">Suivant</button>
+          <button type="button" class="login-btn" [disabled]="!loginForm.valid || !role" (click)="nextStep()">Suivant</button>
         </div>
       </div>
 

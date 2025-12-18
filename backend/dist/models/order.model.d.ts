@@ -20,7 +20,7 @@ export declare class Order extends Entity {
     deliveryAddress: string;
     notes?: string;
     orderDate?: Date;
-    createdAt?: Date;
+    createdAt: Date;
     updatedAt?: Date;
     vendorId: string;
     productId: string;

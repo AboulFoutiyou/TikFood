@@ -31,6 +31,13 @@
     width: 100%;
     max-width: 270px;
     box-shadow: 0 2px 10px #F39D20;
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
   
     form {
       display: flex;

@@ -13,18 +13,23 @@ let VendorUserService = class VendorUserService {
         this.vendorRepository = vendorRepository;
     }
     async verifyCredentials(credentials) {
-        const invalidCredentialsError = 'Invalid email or password.';
-        const foundVendor = await this.vendorRepository.findByEmail(credentials.email);
+        let foundVendor = null;
+        if (credentials.email) {
+            foundVendor = await this.vendorRepository.findByEmail(credentials.email);
+        }
+        else if (credentials.phone) {
+            foundVendor = await this.vendorRepository.findByTelephone(credentials.phone);
+        }
         if (!foundVendor) {
-            throw new rest_1.HttpErrors.Unauthorized(invalidCredentialsError);
+            throw new rest_1.HttpErrors.Unauthorized('Email ou numéro de téléphone invalide.');
         }
         const credentialsFound = await this.vendorRepository.findById(foundVendor.id);
         if (!credentialsFound) {
-            throw new rest_1.HttpErrors.Unauthorized(invalidCredentialsError);
+            throw new rest_1.HttpErrors.Unauthorized('Utilisateur non trouvé.');
         }
         const passwordMatched = await (0, bcryptjs_1.compare)(credentials.password, credentialsFound.password);
         if (!passwordMatched) {
-            throw new rest_1.HttpErrors.Unauthorized(invalidCredentialsError);
+            throw new rest_1.HttpErrors.Unauthorized('Mot de passe incorrect.');
         }
         return credentialsFound;
     }

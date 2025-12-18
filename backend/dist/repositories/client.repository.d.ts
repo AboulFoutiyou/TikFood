@@ -8,4 +8,5 @@ export declare class ClientRepository extends DefaultCrudRepository<Client, type
     readonly orders: HasManyRepositoryFactory<Order, typeof Client.prototype.id>;
     constructor(dataSource: MongodbDataSource, orderRepositoryGetter: Getter<OrderRepository>);
     findByEmail(email: string): Promise<Client | null>;
+    findByTelephone(phone: string): Promise<Client | null>;
 }

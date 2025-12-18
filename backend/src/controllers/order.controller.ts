@@ -161,18 +161,19 @@ async create(
     
     const todayOrders = orders.filter(order => order.orderDate! >= todayStart);
     
-    // Weekly data (last 7 days)
-    const weeklyOrders = new Array(7).fill(0);
-    const weeklyRevenue = new Array(7).fill(0);
-    
-    orders.forEach(order => {
-      const daysDiff = Math.floor((today.getTime() - order.orderDate!.getTime()) / (1000 * 60 * 60 * 24));
-      if (daysDiff < 7) {
-        const dayIndex = 6 - daysDiff;
-        weeklyOrders[dayIndex]++;
-        weeklyRevenue[dayIndex] += order.totalPrice;
-      }
-    });
+    // WEEK (du lundi courant 00:00 au lundi suivant 00:00)
+    const day = today.getDay(); // 0 = dim, 1 = lun...
+    const diffToMonday = (day === 0) ? 6 : day - 1;
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - diffToMonday);
+    monday.setHours(0, 0, 0, 0);
+    const nextMonday = new Date(monday);
+    nextMonday.setDate(monday.getDate() + 7);
+    nextMonday.setHours(0, 0, 0, 0);
+    let weeklyOrders = Array(7).fill(0) as number[];
+    weeklyOrders = this.getWeeklyCountsByWeekday(orders, today);
+    const weeklyRevenue = this.getWeeklyRevenueByWeekday(orders, today);
+
 
     // Top products
     const productStats: { [key: string]: { name: string; orders: number; revenue: number } } = {};
@@ -204,15 +205,75 @@ async create(
 
     return {
       totalOrders: orders.length,
-      totalRevenue: orders.reduce((sum, order) => sum + order.totalPrice, 0),
+      totalRevenue: orders.filter(o => o.status !== OrderStatus.CANCELLED).reduce((sum, order) => sum + order.totalPrice, 0),
       todayOrders: todayOrders.length,
-      todayRevenue: todayOrders.reduce((sum, order) => sum + order.totalPrice, 0),
+      todayRevenue: todayOrders.filter(o => o.status !== OrderStatus.CANCELLED).reduce((sum, order) => sum + order.totalPrice, 0),
       weeklyOrders,
       weeklyRevenue,
       topProducts,
       ordersByStatus,
     };
   }
+
+  getWeeklyRevenueByWeekday(orders: any[], referenceDate: Date = new Date()): number[] {
+    const day = referenceDate.getDay(); // 0 = dim, 1 = lun, ...
+    const diffToMonday = (day === 0) ? -6 : 1 - day;
+    const monday = new Date(referenceDate);
+    monday.setDate(referenceDate.getDate() + diffToMonday);
+    monday.setHours(0, 0, 0, 0);
+
+    const nextMonday = new Date(monday);
+    nextMonday.setDate(monday.getDate() + 7);
+    nextMonday.setHours(0, 0, 0, 0);
+
+    const revenues = new Array(7).fill(0);
+
+    for (const o of orders) {
+      const d = o.orderDate instanceof Date ? o.orderDate : new Date(o.orderDate);
+      if (isNaN(d.getTime())) continue;
+
+      if (d >= monday && d < nextMonday && o.status !== OrderStatus.CANCELLED) {
+        const jsDay = d.getDay(); // 0..6 (dim..sam)
+        const mondayIndex = (jsDay + 6) % 7; // 0 = lundi
+        revenues[mondayIndex] += Number(o.totalPrice) || 0;
+      }
+    }
+
+    return revenues;
+  }
+
+  // ...existing code...
+  getWeeklyCountsByWeekday(orders: any[], referenceDate: Date = new Date()): any[] {
+    // calcule le lundi de la semaine contenant referenceDate (00:00)
+    const day = referenceDate.getDay(); // 0 = dim, 1 = lun, ...
+    const diffToMonday = (day === 0) ? -6 : 1 - day;
+    const monday = new Date(referenceDate);
+    monday.setDate(referenceDate.getDate() + diffToMonday);
+    monday.setHours(0, 0, 0, 0);
+
+    const nextMonday = new Date(monday);
+    nextMonday.setDate(monday.getDate() + 7);
+    nextMonday.setHours(0, 0, 0, 0);
+
+    // initialise tableau [lun, mar, mer, jeu, ven, sam, dim]
+    const counts = new Array(7).fill(0);
+
+    for (const o of orders) {
+      // parser la date quel que soit le format (string ou Date)
+      const d = o.orderDate instanceof Date ? o.orderDate : new Date(o.orderDate);
+      if (isNaN(d.getTime())) continue; // ignore dates invalides
+
+      // ne prendre que les commandes de la semaine [monday, nextMonday)
+      if (d >= monday && d < nextMonday) {
+        const jsDay = d.getDay(); // 0..6 (dim..sam)
+        const mondayIndex = (jsDay + 6) % 7; // transforme JS day en index où 0 = lundi
+        counts[mondayIndex] += 1;
+      }
+    }
+
+    return counts;
+  }
+// ...existing code...
 
   @get('/orders/{id}')
   @response(200, {

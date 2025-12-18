@@ -1,7 +1,9 @@
+import { Entity } from '@loopback/repository';
 import { Product } from './product.model';
 import { Order } from './order.model';
-import { User } from '@loopback/authentication-jwt';
-export declare class Vendor extends User {
+export declare class Vendor extends Entity {
+    id: string;
+    email?: string;
     name: string;
     password: string;
     description?: string;

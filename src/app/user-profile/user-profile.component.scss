@@ -1,0 +1,126 @@
+// user-profile.component.scss
+
+.profile-header ion-toolbar {
+  --background: var(--ion-color-light);
+}
+
+.profile-content {
+  --background: var(--ion-color-light);
+}
+
+.profile-summary {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: white;
+
+  .avatar-container {
+    margin-bottom: 8px;
+  }
+
+  .initials-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-warning));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  .user-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .user-email {
+    font-size: 14px;
+    color: var(--ion-color-medium-shade);
+    margin: 0;
+  }
+}
+
+// Styles pour le squelette de chargement
+.initials-avatar-skeleton {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.user-name-skeleton {
+  width: 60%;
+  height: 22px;
+  border-radius: 4px;
+}
+.user-email-skeleton {
+  width: 80%;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.action-list {
+  // `inset` s'occupe du style de base
+  ion-item.disabled-item {
+    // On baisse l'opacité de tout l'élément pour le rendre "effacé"
+    opacity: 0.5;
+
+    // On change le curseur pour indiquer que ce n'est pas cliquable
+    cursor: not-allowed;
+    
+    // On peut aussi griser l'icône spécifiquement si besoin
+    ion-icon {
+      color: var(--ion-color-medium-shade);
+    }
+
+    // Style pour le sous-titre optionnel
+    ion-label p {
+      color: var(--ion-color-medium-shade);
+      font-size: 0.8em;
+      margin-top: 4px;
+    }
+  }
+
+  ion-list-header {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ion-color-medium-shade);
+    text-transform: uppercase;
+  }
+
+  ion-item {
+    --ripple-color: var(--ion-color-primary-tint);
+
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.danger-zone {
+  margin: 24px 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ion-color-light-shade);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  ion-button {
+    --justify-content: flex-start;
+    --padding-start: 16px;
+    font-weight: 600;
+
+    ion-icon {
+      margin-right: 12px;
+    }
+  }
+}
+
+// Style pour le bouton supprimer de l'alerte
+.danger-button {
+  color: var(--ion-color-danger) !important;
+}

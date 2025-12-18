@@ -1,0 +1,175 @@
+// cart.component.scss
+
+.cart-header {
+  ion-toolbar {
+    --background: var(--ion-color-light); // Fond gris clair pour l'en-tête
+  }
+}
+
+.cart-content {
+  --background: var(--ion-color-light); // Fond gris clair pour toute la page
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  text-align: center;
+  color: var(--ion-color-medium-shade);
+
+  ion-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+}
+
+.order-list {
+  background: transparent; // La liste est transparente, les cartes ont le fond
+  padding: 0;
+  box-shadow: none;
+}
+
+.order-card {
+  background: white;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 12px;
+  border-bottom: 1px solid var(--ion-color-light-shade);
+
+  .product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .product-image-placeholder {
+    width: 48px;
+    height: 48px;
+    background: var(--ion-color-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--ion-color-primary);
+    flex-shrink: 0;
+  }
+
+  .product-details {
+    .product-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+    }
+    .order-date {
+      font-size: 12px;
+      color: var(--ion-color-medium-shade);
+      margin: 0;
+    }
+  }
+
+  .order-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    white-space: nowrap;
+  }
+}
+
+.order-card-body {
+  padding: 20px 16px;
+}
+
+/* --- La magie du Status Tracker --- */
+.status-tracker {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 25%; // Chaque étape prend 25% de la largeur
+    position: relative;
+    color: var(--ion-color-medium);
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      background: var(--ion-color-light-tint);
+      border: 2px solid var(--ion-color-medium);
+      border-radius: 50%;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 500;
+    }
+  }
+
+  .line {
+    flex: 1;
+    height: 2px;
+    background: var(--ion-color-medium);
+    margin: 7px -10px 0 -10px;
+    opacity: 0.5;
+  }
+  
+  // Styles quand une étape est finie
+  .status-item.completed {
+    color: var(--ion-color-primary);
+    .dot {
+      background: var(--ion-color-primary);
+      border-color: var(--ion-color-primary);
+    }
+  }
+
+  // Styles quand une étape est en cours
+  .status-item.active {
+    color: var(--ion-color-primary);
+    font-weight: 700;
+    .dot {
+      border-color: var(--ion-color-primary);
+      transform: scale(1.2);
+    }
+  }
+}
+
+.cancelled-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ion-color-danger);
+  font-weight: 600;
+  ion-icon { font-size: 20px; }
+}
+
+
+.order-card-footer {
+  text-align: right;
+  padding: 0 8px 8px 8px;
+  
+  ion-button {
+    --color: var(--ion-color-primary);
+    font-weight: 600;
+  }
+}

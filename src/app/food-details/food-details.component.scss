@@ -1,245 +1,128 @@
-.details-offre {
-    background-color: white;
-    
-  .header-offre {
-    background-color: orange;
-    color: white;
-    text-align: center;
-    padding: 20px 0 60px 0;
-    height: 206px;
-    position: relative;
-    
-    margin-bottom: 50px;
+/* ============================================= */
+/*          THÈME "EXPÉRIENCE PRODUIT"            */
+/* ============================================= */
 
-    ion-icon {
-      position: absolute;
-      left: 15px;
-      top: 37px;
-      font-size: 18px;
-      color: white;
-      cursor: pointer;
-    }
+:root {
+  --theme-primary: #FF7B00;
+  --theme-text-dark: #1A202C;
+  --theme-text-light: #718096;
+  --theme-bg-light: #F7FAFC;
+  --theme-bg-white: #FFFFFF;
+}
 
-    h2 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 30px;
-    }
+.product-detail-page {
+  --background: var(--theme-bg-light);
+}
 
-    .image-container {
-      margin-top: 70px;
-    //   display: flex;
-    //   justify-content: center;
+/* ---- Section Header Immersive ---- */
+.header-container {
+  position: relative;
+  height: 300px; // Hauteur de l'image de fond
+
+  .header-background {
     position: absolute;
-      left: 50%;
-      bottom: -40px; /* Positionnez l'image au centre de la courbe */
-      transform: translateX(-50%);
-      z-index: 1;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
 
-      .image-placeholder {
-        background-color: #f0f0f0;
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        line-height: 120px;
-        text-align: center;
-        font-size: 16px;
-        color: #aaa;
-      }
+    .product-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.05); // Léger zoom pour éviter les bords vides
     }
 
-    &::after {
-      content: '';
+    .header-scrim {
       position: absolute;
-      bottom: -20px;
-      left: 0;
-      right: 0;
-      height: 40px;
-      background-color: white;
-      border-radius: 100% 100% 0 0 / 100% 100% 0 0;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%);
     }
   }
 
+  .floating-toolbar {
+    --background: transparent;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    color: white;
 
-  footer {
-    margin-top: auto;
+    .back-button {
+      --background: rgba(0,0,0,0.3);
+      --border-radius: 50%;
+      color: white;
+    }
+    ion-title { font-weight: 600; }
   }
-
-  
 }
 
-
-// Les nouveaux
-
-ion-content {
-  --background: white;
-  padding: 0;
-}
-
-// Custom Ionic styling for product detail page
-.custom-toolbar {
-  --background: linear-gradient(135deg, #ff9500, #ff7b00);
-  --color: white;
-  --border-radius: 0 0 20px 20px;
-  --box-shadow: 0 2px 10px rgba(255, 149, 0, 0.3);
-}
-
-.offre-content {
-  margin-top: auto;
-}
-
-.back-button {
-  --color: white;
-  --background-hover: rgba(255, 255, 255, 0.1);
-  --border-radius: 50%;
-}
-
-.header-title {
-  --color: white;
-  font-weight: 600;
-  font-size: 18px;
-}
-
-.product-detail-content {
-  --background: #f8f9fa;
-  --padding-top: 0;
-  --padding-bottom: 0;
-  --padding-start: 0;
-  --padding-end: 0;
-}
-
-.content-wrapper {
-  --background: #f8f9fa;
-  background-color: white;
-  padding: 10px;
-  min-height: 100%;
+/* ---- Section Contenu Principal ---- */
+.content-container {
+  background: var(--theme-bg-light);
+  border-radius: 24px 24px 0 0;
+  margin-top: -24px; // Fait remonter le contenu sur l'image
+  position: relative;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-.image-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 8px;
-
-  ion-img.product-image img{
-    border-radius: 50% !important;
-  object-fit: cover;
-  width: 1700px;
-  height: 1700px;
-  display: block;
-  margin: 0 auto;
-  overflow: hidden;
-  }
-
-    .image-placeholder {
-      border-radius: 50%;
-  overflow: hidden;
-  width: 120px;
-  height: 120px;
-  display: flex;
+.vendor-info-chip {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background: #f3f3f3;
-    }
- 
+  gap: 8px;
+  background: var(--theme-bg-white);
+  padding: 6px 12px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  align-self: flex-start; // Pour que le chip ne prenne pas toute la largeur
+  cursor: pointer;
 
-  
-}
-
-.product-details-card {
-  --background: white;
-  --border-radius: 16px;
-  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  margin: 0;
-  flex: 1;
-
-  ion-card-content {
-    padding: 20px;
+  ion-avatar {
+    width: 28px;
+    height: 28px;
+    background: var(--theme-primary);
+    color: white;
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    color: #FF9500;
   }
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  .info-icon {
-    font-size: 18px;
-    color: #ff7b00;
-  }
-
-  .info-text {
+  ion-label {
     font-size: 14px;
-    color: #ff7b00;
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--theme-text-dark);
   }
 }
 
-.product-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.title-section {
+  .product-name {
+    font-size: 28px;
+    font-weight: 800; // Très gras pour un impact maximal
+    color: var(--theme-text-dark);
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+  .product-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--theme-primary);
+  }
+}
 
-  .name-text {
+.description-section, .quantity-section {
+  h3 {
     font-size: 16px;
     font-weight: 600;
-    color: black;
+    color: var(--theme-text-dark);
+    margin: 0 0 12px 0;
+    border-bottom: 2px solid var(--theme-primary);
+    padding-bottom: 4px;
+    display: inline-block;
   }
-
-  .quantity-chip {
-    --background: #f3f4f6;
-    --color: #6b7280;
-    height: 24px;
-    font-size: 12px;
-  }
-}
-
-.price {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ff7b00;
-}
-
-.description {
-  h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 8px 0;
-  }
-
   p {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #6b7280;
+    font-size: 15px;
+    color: var(--theme-text-light);
+    line-height: 1.6;
     margin: 0;
-  }
-}
-
-.total-price {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-  border-top: 1px solid #e5e7eb;
-  margin-top: 8px;
-
-  .total-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
-  }
-
-  .total-amount {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ff7b00;
   }
 }
 
@@ -247,113 +130,62 @@ ion-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-top: 8px;
+  gap: 24px;
+  color: #FF9500;
 
-  ion-button {
-    --border-width: 2px;
-    --border-color: #ff7b00;
-    --color: #ff7b00;
-    --background: white;
-    --background-activated: #ff7b00;
-    --color-activated: white;
-    --padding-start: 8px;
-    --padding-end: 8px;
-    width: 36px;
-    height: 36px;
+  .quantity-btn {
+    --color: #FF9500;
+    font-size: 32px; // Icônes plus grosses et plus cliquables
   }
-
   .quantity-display {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1f2937;
-    min-width: 24px;
-    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #FF9500;
   }
 }
 
-.order-section {
-  margin-top: auto;
-  padding-top: 16px;
+/* ---- Section Footer Collant ---- */
+ion-footer.order-footer {
+  &::before {
+    background-image: none; // Supprime la bordure par défaut du footer
+  }
+  ion-toolbar {
+    --background: #FF9500;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    --min-height: auto;
+  }
+  
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .total-price-section {
+    display: flex;
+    flex-direction: column;
+    .total-label {
+      font-size: 14px;
+      color: var(--theme-text-light);
+    }
+    .total-amount {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--theme-text-dark);
+    }
+  }
 
   .order-button {
-    --background: #ff7b00;
-    --background-activated: #ff7b00;
-    --color: black;
-    --border-radius: 12px;
-    --box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
-    --padding-top: 16px;
-    --padding-bottom: 16px;
-    font-weight: 600;
-    font-size: 16px;
-    fill: #ff7b00;
-    
-    &:hover {
-      --box-shadow: 0 6px 16px rgba(255, 149, 0, 0.4);
-      transform: translateY(-2px);
-    }
-  }
-}
-
-// Responsive design
-@media (max-width: 480px) {
-  .content-wrapper {
-    padding: 16px;
-  }
-
-  .product-details-card ion-card-content {
-    padding: 16px;
-  }
-
-  .product-image-container .product-image {
-    width: 100px;
-    height: 100px;
-  }
-}
-
-// Dark mode support
-@media (prefers-color-scheme: dark) {
-  .product-detail-content {
-    --background: #1f2937;
-  }
-
-  .product-details-card {
-    --background: #374151;
+    --background: var(--theme-primary);
     --color: white;
-  }
-
-  .info-text {
-    color: #d1d5db !important;
-  }
-
-  .name-text {
-    color: white ;
-  }
-
-  .quantity-chip {
-    --background: #4b5563 !important;
-    --color: #d1d5db !important;
-  }
-
-  .description {
-    h3 {
-      color: white !important;
-    }
-
-    p {
-      color: #d1d5db !important;
-    }
-  }
-
-  .total-price {
-    border-top-color: #4b5563;
-
-    .total-label {
-      color: white !important;
-    }
-  }
-
-  .quantity-display {
-    color: white ;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 15px rgba(var(--ion-color-primary-rgb, 255, 123, 0), 0.3);
+    font-weight: 600;
+    height: 52px;
+    flex-grow: 1; // Le bouton prend l'espace restant
   }
 }

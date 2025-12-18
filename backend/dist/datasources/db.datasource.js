@@ -7,13 +7,9 @@ const repository_1 = require("@loopback/repository");
 const config = {
     name: 'db',
     connector: 'mongodb',
-    url: 'mongodb://localhost:27017/tikfoodbd',
-    host: 'localhost',
-    port: 27017,
-    user: '',
-    password: '',
-    database: 'tikfoodbd',
-    useNewUrlParser: true
+    url: 'mongodb+srv://foutiyou_db_user:16641@tikfood1.7agnjzi.mongodb.net/tikfoodbd?retryWrites=true&w=majority',
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 };
 // Observe application's life cycle to disconnect the datasource when
 // application is stopped. This allows the application to be shut down

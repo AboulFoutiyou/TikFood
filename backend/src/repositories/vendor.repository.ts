@@ -29,4 +29,9 @@ export class VendorRepository extends DefaultCrudRepository<
     const vendor = await this.findOne({where: {email}});
     return vendor;
   }
+
+  async findByTelephone(phone: string): Promise<Vendor | null> {
+    const vendor = await this.findOne({where: {phone}});
+    return vendor;
+  }
 }

@@ -8,6 +8,23 @@
   <!-- Custom Header -->
   <app-custom-header></app-custom-header>
 
+  <div *ngIf="!isLoggedIn" class="auth-banner">
+  <div class="auth-banner-content">
+    <div class="auth-banner-text">
+      <strong>Vous êtes vendeur ?</strong>
+      <span>Connectez-vous pour gérer vos produits.</span>
+    </div>
+    <div class="auth-banner-actions">
+      <ion-button size="small" fill="outline" color="light" (click)="navigateToLogin()">
+        Connexion
+      </ion-button>
+      <ion-button size="small" fill="solid" color="warning" (click)="navigateToRegister()">
+        <strong>S'inscrire</strong>
+      </ion-button>
+    </div>
+  </div>
+</div>
+
   <!-- Category Filter -->
   <div class="filter-section">
     <ion-segment 

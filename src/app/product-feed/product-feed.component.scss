@@ -53,6 +53,53 @@
   }
 }
 
+// votre-page.component.scss
+
+.auth-banner {
+    background: linear-gradient(135deg, #FF9500, #FF7B00);
+  color: white;
+  padding: 14px 18px;
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(255, 123, 0, 0.25);
+
+  strong { font-weight: 700; }
+  span { font-size: 0.9em; opacity: 0.9; }
+  ion-button { --border-radius: 10px; }
+}
+
+.auth-banner-content {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.auth-banner-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+  
+  strong {
+    font-weight: 600;
+  }
+  
+  span {
+    font-size: 0.9em;
+    opacity: 0.9;
+  }
+}
+
+.auth-banner-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0; // Empêche les boutons de se réduire
+
+  ion-button {
+    --border-radius: 8px;
+  }
+}
+
 @media (max-width: 480px) {
   .filter-section {
     .category-segment {

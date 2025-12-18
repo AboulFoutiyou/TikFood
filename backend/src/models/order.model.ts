@@ -82,7 +82,7 @@ export class Order extends Entity {
     type: 'date',
     default: () => new Date(),
   })
-  createdAt?: Date;
+  createdAt: Date;
 
   @property({
     type: 'date',
