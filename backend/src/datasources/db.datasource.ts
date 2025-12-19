@@ -4,7 +4,7 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'db',
   connector: 'mongodb',
-  url: 'mongodb+srv://foutiyou_db_user:16641@tikfood1.7agnjzi.mongodb.net/tikfoodbd?retryWrites=true&w=majority',
+  url: 'mongodb+srv://<user_name>:<password>@tikfood1.7agnjzi.mongodb.net/tikfoodbd?retryWrites=true&w=majority',
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
