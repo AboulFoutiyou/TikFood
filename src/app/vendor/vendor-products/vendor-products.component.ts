@@ -183,6 +183,7 @@ export class VendorProductsComponent implements OnInit {
   closeModal(): void {
     this.isModalOpen = false;
     this.editingProduct = null;
+    this.previewUrl = null;
     this.resetForm();
   }
 

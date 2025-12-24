@@ -70,7 +70,12 @@ export class UserProfileComponent  implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    // this.location.back();
+    if (this.role === 'vendor') {
+      this.router.navigate(['/vendor-dashboard']);
+    } else {
+      this.router.navigate(['/feed']);
+    }
   }
 
   /**
